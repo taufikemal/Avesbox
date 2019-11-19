@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+    <color name="WarnaDominan">#DAA700</color>
+    <color name="WarnaParsial">#06067E</color>
+    <color name="WarnaOrnamen">#B18800</color>
+    <color name="WarnaSebagian">#886800</color>
+    <color name="WarnaDasar">#EFEFEF</color>
+    <color name="PutihBiruDikit">#E3F1FE</color>
+    <color name="Abu">#CDD3D9</color>
+    <color name="Putih">#FFFF</color>
+    <color name="WarnaLiveChoose">#FCC923</color>
+    <color name="BiruSoft">#4179AE</color>
+</resources>
