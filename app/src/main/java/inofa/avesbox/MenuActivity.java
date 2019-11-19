@@ -131,6 +131,7 @@ public class MenuActivity extends AppCompatActivity
                                 DataSensor dataSensor = arrayDataSensor.get(i);
                                 if (dataSensor.getKodeSensor() == 4) {
                                     filterDataSuhu.add(dataSensor);
+
                                     float suhu = filterDataSuhu.get(filterDataSuhu.size() - 1).getNilai();
                                     DecimalFormat decimalFormat = new DecimalFormat("#.##");
                                     TvSuhu.setText(String.valueOf(decimalFormat.format(suhu)));
