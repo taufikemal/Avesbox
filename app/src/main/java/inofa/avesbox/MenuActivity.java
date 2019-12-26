@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -93,6 +94,17 @@ public class MenuActivity extends AppCompatActivity
         };
         handler.post(refresh);
 
+
+        //pull refresh
+        final SwipeRefreshLayout pullToRefresh = findViewById(R.id.pullToRefresh);
+        pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                suhu();
+                pullToRefresh.setRefreshing(false);
+            }
+        });
+
         //Inten Menu
         LinearLayout MenuAirPakan;
         MenuAirPakan = findViewById(R.id.ButtonPakanAir);
@@ -101,6 +113,15 @@ public class MenuActivity extends AppCompatActivity
             public void onClick(View v) {
                 Intent i = new Intent(MenuActivity.this, AirPakanActivity.class);
                 startActivity(i);
+            }
+        });
+
+        LinearLayout MenuSensorKandang = findViewById(R.id.buttonSensorKandang);
+        MenuSensorKandang.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MenuActivity.this, SensorActivity.class);
+                startActivity(intent);
             }
         });
     }
@@ -131,7 +152,6 @@ public class MenuActivity extends AppCompatActivity
                                 DataSensor dataSensor = arrayDataSensor.get(i);
                                 if (dataSensor.getKodeSensor() == 4) {
                                     filterDataSuhu.add(dataSensor);
-
                                     float suhu = filterDataSuhu.get(filterDataSuhu.size() - 1).getNilai();
                                     DecimalFormat decimalFormat = new DecimalFormat("#.##");
                                     TvSuhu.setText(String.valueOf(decimalFormat.format(suhu)));
@@ -220,7 +240,6 @@ public class MenuActivity extends AppCompatActivity
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
         handler.removeCallbacks(refresh);
     }
 

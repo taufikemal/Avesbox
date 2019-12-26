@@ -2,6 +2,7 @@ package inofa.avesbox.Rest;
 
 import inofa.avesbox.Model.DataSensor;
 import inofa.avesbox.Model.DataSensorRespon;
+import inofa.avesbox.Model.DetailUserRespon;
 import inofa.avesbox.Model.LoginRespon;
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -21,4 +22,9 @@ public interface ApiInterface {
     @GET("record")
     Call<DataSensorRespon> dataHasilSensor(
             @Header("token") String token);
+
+    @GET("user")
+    Call<DetailUserRespon> dataUser(
+            @Header("token") String token);
+
 }

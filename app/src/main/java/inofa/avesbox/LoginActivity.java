@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import inofa.avesbox.Model.LoginRespon;
@@ -27,6 +28,7 @@ public class LoginActivity extends AppCompatActivity {
     EditText password;
     Context mContext;
     ProgressDialog loading;
+    LinearLayout formLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,8 +37,16 @@ public class LoginActivity extends AppCompatActivity {
         login = findViewById(R.id.button_login);
         username = findViewById(R.id.EtUsername);
         password = findViewById(R.id.EtPassword);
+        formLogin = findViewById(R.id.formLogin);
         mContext = this;
 
+        if (SharePrefManager.getInstance(LoginActivity.this).isLoggedIn()) {
+            Intent i = new Intent(LoginActivity.this, MenuActivity.class);
+            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(i);
+        } else {
+            formLogin.setVisibility(View.VISIBLE);
+        }
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         login.setOnClickListener(new View.OnClickListener() {
@@ -59,26 +69,13 @@ public class LoginActivity extends AppCompatActivity {
             username.requestFocus();
             return;
         }
-
-//        if (!Patterns.EMAIL_ADDRESS.matcher(uname).matches()) {
-//            username.setError("Enter a valid Email");
-//            username.requestFocus();
-//            return;
-//        }
-
         if (pass.isEmpty()) {
             loading.dismiss();
             password.setError("Password is required");
             password.requestFocus();
             return;
-
         }
 
-//        if (pass.length() < 8) {
-//            password.setError("Password should be at least 8 characters long");
-//            password.requestFocus();
-//            return;
-//        }
         Call<LoginRespon> call = ApiClient
                 .getInstance()
                 .getApi()
@@ -90,18 +87,18 @@ public class LoginActivity extends AppCompatActivity {
                 LoginRespon loginResponse = response.body();
                 loading.dismiss();
                 if (response.isSuccessful()) {
-                    if(loginResponse.getCode()==200) {
+                    if (loginResponse.getCode() == 200) {
                         SharePrefManager.getInstance(LoginActivity.this).saveUser(loginResponse);
                         Toast.makeText(mContext, "Login successfully", Toast.LENGTH_LONG).show();
                         Intent intent = new Intent(LoginActivity.this, MenuActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
-                    }
-                    else {
+                    } else {
                         Toast.makeText(mContext, "Username password salah!", Toast.LENGTH_LONG).show();
                     }
                 }
             }
+
             @Override
             public void onFailure(Call<LoginRespon> call, Throwable t) {
                 loading.dismiss();
