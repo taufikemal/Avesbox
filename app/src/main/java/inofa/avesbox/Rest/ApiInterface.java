@@ -18,7 +18,6 @@ public interface ApiInterface {
             @Field("username") String username,
             @Field("password") String password);
 
-
     @GET("record")
     Call<DataSensorRespon> dataHasilSensor(
             @Header("token") String token);

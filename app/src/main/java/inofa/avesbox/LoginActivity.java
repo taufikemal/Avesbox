@@ -40,13 +40,13 @@ public class LoginActivity extends AppCompatActivity {
         formLogin = findViewById(R.id.formLogin);
         mContext = this;
 
-        if (SharePrefManager.getInstance(LoginActivity.this).isLoggedIn()) {
-            Intent i = new Intent(LoginActivity.this, MenuActivity.class);
-            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(i);
-        } else {
-            formLogin.setVisibility(View.VISIBLE);
-        }
+//        if (SharePrefManager.getInstance(LoginActivity.this).isLoggedIn()) {
+//            Intent i = new Intent(LoginActivity.this, MenuActivity.class);
+//            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//            startActivity(i);
+//        } else {
+//            formLogin.setVisibility(View.VISIBLE);
+//        }
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         login.setOnClickListener(new View.OnClickListener() {

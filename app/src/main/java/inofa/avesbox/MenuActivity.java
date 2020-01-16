@@ -3,6 +3,7 @@ package inofa.avesbox;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
@@ -19,6 +20,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -85,6 +87,16 @@ public class MenuActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        //nav header menu
+        View hView = navigationView.inflateHeaderView(R.layout.navigation_header_menu);
+//        hView = findViewById(R.id.profilBoard);
+        ImageView fotprof = (ImageView)hView.findViewById(R.id.myPict);
+        TextView tvNama = (TextView)hView.findViewById(R.id.tvNama);
+        fotprof.setImageResource(R.mipmap.profilaccount);
+        tvNama.setText("Username");
+
+
+
         //Refresh
         refresh = new Runnable() {
             public void run() {
@@ -115,7 +127,7 @@ public class MenuActivity extends AppCompatActivity
                 startActivity(i);
             }
         });
-
+        //inten halaman sensor
         LinearLayout MenuSensorKandang = findViewById(R.id.buttonSensorKandang);
         MenuSensorKandang.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,6 +136,15 @@ public class MenuActivity extends AppCompatActivity
                 startActivity(intent);
             }
         });
+        //inten halaman profil
+//        LinearLayout detailProfil = findViewById(R.id.buttonProfil);
+//        detailProfil.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent i = new Intent(MenuActivity.this, ProfilActivity.class);
+//                startActivity(i);
+//            }
+//        });
     }
 
     public void suhu() {
@@ -215,8 +236,10 @@ public class MenuActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.nav_profil) {
             // Handle the camera action
+            Intent i = new Intent(MenuActivity.this, ProfilActivity.class);
+            startActivity(i);
         } else if (id == R.id.nav_gallery) {
 
         } else if (id == R.id.nav_slideshow) {

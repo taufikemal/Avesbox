@@ -3,51 +3,54 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     android:orientation="vertical">
-    <LinearLayout
-        android:id="@+id/profilBoard"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/WarnaOrnamen"
-        android:gravity="center"
-        android:orientation="vertical">
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/myPict"
-            android:layout_marginTop="35dp"
-            android:layout_marginBottom="25dp"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:src="@mipmap/raisa" />
-        <LinearLayout
-            android:id="@+id/buttonProfil"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/WarnaSebagian"
-            android:gravity="center">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Cintya Ayunda"
-                android:textSize="20dp"
-                android:drawableLeft="@drawable/account_asset"
-                android:textColor="@color/Putih"
-                android:textStyle="bold"
-                android:paddingVertical="9dp"
-                android:drawablePadding="10dp"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Daftar Kandang"
-                android:textColor="@color/Putih"
-                android:textSize="16dp"
-                android:padding="5dp"/>
-        </LinearLayout>
-    </LinearLayout>
+    <!--<LinearLayout-->
+        <!--android:id="@+id/profilBoard"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:background="@color/WarnaOrnamen"-->
+        <!--android:gravity="center"-->
+        <!--android:orientation="vertical">-->
+        <!--<de.hdodenhof.circleimageview.CircleImageView-->
+            <!--android:id="@+id/myPict"-->
+            <!--android:layout_marginTop="35dp"-->
+            <!--android:layout_marginBottom="25dp"-->
+            <!--android:layout_width="100dp"-->
+            <!--android:src="@mipmap/raisa"-->
+            <!--android:layout_height="100dp"/>-->
+        <!--<LinearLayout-->
+            <!--android:id="@+id/buttonProfil"-->
+            <!--android:clickable="true"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:background="@color/WarnaSebagian"-->
+            <!--android:gravity="center">-->
+            <!--<TextView-->
+                <!--android:id="@+id/tvNama"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="Cintya Ayunda"-->
+                <!--android:textSize="20dp"-->
+                <!--android:drawableLeft="@drawable/account_asset"-->
+                <!--android:textColor="@color/Putih"-->
+                <!--android:textStyle="bold"-->
+                <!--android:paddingVertical="9dp"-->
+                <!--android:drawablePadding="10dp"/>-->
+        <!--</LinearLayout>-->
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:gravity="center">-->
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="Daftar Kandang"-->
+                <!--android:textColor="@color/Putih"-->
+                <!--android:textSize="16dp"-->
+                <!--android:padding="5dp"/>-->
+        <!--</LinearLayout>-->
+    <!--</LinearLayout>-->
     <!--<ListView-->
     <!--android:id="@+id/ListViewKandang"-->
     <!--android:layout_width="match_parent"-->

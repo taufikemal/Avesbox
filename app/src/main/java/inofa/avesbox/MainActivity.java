@@ -20,9 +20,14 @@ public class MainActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
+                    if (SharePrefManager.getInstance(MainActivity.this).isLoggedIn()){
+                       Intent intent = new Intent(MainActivity.this, MenuActivity.class);
+                       intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                       startActivity(intent);
+                    }else{
                     Intent login = new Intent(MainActivity.this, LoginActivity.class);
                     startActivity(login);
-                    finish();
+                    finish();}
             }
         }, waktu_loading);
     }
