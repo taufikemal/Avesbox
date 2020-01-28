@@ -3,6 +3,7 @@ package inofa.avesbox;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
@@ -25,6 +26,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -34,6 +37,7 @@ import java.util.Date;
 import inofa.avesbox.Model.DataSensor;
 import inofa.avesbox.Model.DataSensorRespon;
 import inofa.avesbox.Model.LoginRespon;
+import inofa.avesbox.Model.LoginResponUser;
 import inofa.avesbox.Rest.ApiClient;
 import inofa.avesbox.Storage.SharePrefManager;
 import retrofit2.Call;
@@ -56,6 +60,8 @@ public class MenuActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         mContext = this;
+
+        loading = ProgressDialog.show(mContext, null, "Harap Tunggu...", true, false);
 
         //Salam Sapaan//
         TVGreeting = findViewById(R.id.TVgreeting);
@@ -88,12 +94,18 @@ public class MenuActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         //nav header menu
+        SharedPreferences shfm = getSharedPreferences("spAvesBox", MODE_PRIVATE);
+        Gson gson = new Gson();
+        String data = shfm.getString("data", "");
+        LoginResponUser user = gson.fromJson(data, LoginResponUser.class);
+        String nama = user.getNama();
+
         View hView = navigationView.inflateHeaderView(R.layout.navigation_header_menu);
 //        hView = findViewById(R.id.profilBoard);
         ImageView fotprof = (ImageView)hView.findViewById(R.id.myPict);
         TextView tvNama = (TextView)hView.findViewById(R.id.tvNama);
-        fotprof.setImageResource(R.mipmap.profilaccount);
-        tvNama.setText("Username");
+        fotprof.setImageResource(R.mipmap.iconprofil);
+        tvNama.setText(nama);
 
 
 
@@ -149,8 +161,8 @@ public class MenuActivity extends AppCompatActivity
 
     public void suhu() {
 
-        LoginRespon loginRespon = SharePrefManager.getInstance(this).getUser();
-        String token = loginRespon.getToken();
+        SharedPreferences shfm = getSharedPreferences("spAvesBox", MODE_PRIVATE);
+        String token = shfm.getString("token", "");
         // retrofit suhu
         Call<DataSensorRespon> call = ApiClient
                 .getInstance()
@@ -202,6 +214,7 @@ public class MenuActivity extends AppCompatActivity
                 Toast.makeText(mContext, "Something wrong. Please try again later.", Toast.LENGTH_SHORT).show();
             }
         });
+        loading.dismiss();
     }
 
     @Override
@@ -242,11 +255,7 @@ public class MenuActivity extends AppCompatActivity
             startActivity(i);
         } else if (id == R.id.nav_gallery) {
 
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.btlogout) {
+        }  else if (id == R.id.btlogout) {
             loading = ProgressDialog.show(mContext, null, "Harap Tunggu...", true, false);
             SharePrefManager.getInstance(MenuActivity.this).clear();
             Toast.makeText(mContext,"Logout successfully", Toast.LENGTH_LONG).show();
