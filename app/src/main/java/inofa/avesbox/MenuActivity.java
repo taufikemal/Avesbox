@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.Image;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
@@ -20,20 +21,30 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 
+import inofa.avesbox.Adapter.ListNewsAdapter;
 import inofa.avesbox.Model.DataSensor;
 import inofa.avesbox.Model.DataSensorRespon;
 import inofa.avesbox.Model.LoginRespon;
@@ -51,7 +62,22 @@ public class MenuActivity extends AppCompatActivity
     Context mContext;
     Handler handler = new Handler();
     ProgressDialog loading;
+    SwipeRefreshLayout swipeRefreshLayout;
     Runnable refresh;
+
+    // newslist
+    String API_KEY = "9c8df7817a1a41de8d10732a3d57e887";
+    String NEWS_SOURCE = "cnn";
+    ListView listNews;
+    ProgressBar loader;
+
+    ArrayList<HashMap<String, String>> dataList = new ArrayList<HashMap<String, String>>();
+    public static String KEY_AUTHOR = "author";
+    public static final String KEY_TITLE = "title";
+    public static String KEY_DESCRIPTION = "description";
+    public static final String KEY_URL = "url";
+    public static final String KEY_URLTOIMAGE = "urlToImage";
+    public static final String KEY_PUBLISHEDAT = "publishedAt";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +88,22 @@ public class MenuActivity extends AppCompatActivity
         mContext = this;
 
         loading = ProgressDialog.show(mContext, null, "Harap Tunggu...", true, false);
+
+        // news
+
+        listNews = (ListView) findViewById(R.id.listNews);
+        loader = (ProgressBar) findViewById(R.id.loader);
+        listNews.setEmptyView(loader);
+
+
+        if(Function.isNetworkAvailable(getApplicationContext()))
+        {
+            DownloadNews newsTask = new DownloadNews();
+            newsTask.execute();
+        }else{
+            Toast.makeText(getApplicationContext(), "No Internet Connection", Toast.LENGTH_LONG).show();
+        }
+
 
         //Salam Sapaan//
         TVGreeting = findViewById(R.id.TVgreeting);
@@ -119,15 +161,32 @@ public class MenuActivity extends AppCompatActivity
         handler.post(refresh);
 
 
-        //pull refresh
-        final SwipeRefreshLayout pullToRefresh = findViewById(R.id.pullToRefresh);
-        pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//        pull refresh
+        swipeRefreshLayout = findViewById(R.id.pullToRefresh);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 suhu();
-                pullToRefresh.setRefreshing(false);
+                swipeRefreshLayout.setRefreshing(false);
+            }
+
+        });
+
+        // listview dan swipeResfresh
+        listNews.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+            }
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                if (listNews.getChildAt(0) != null) {
+                    swipeRefreshLayout.setEnabled(listNews.getFirstVisiblePosition() == 0 && listNews.getChildAt(0).getTop() == 0);
+                }
             }
         });
+
+
 
         //Inten Menu
         LinearLayout MenuAirPakan;
@@ -254,7 +313,9 @@ public class MenuActivity extends AppCompatActivity
             Intent i = new Intent(MenuActivity.this, ProfilActivity.class);
             startActivity(i);
         } else if (id == R.id.nav_gallery) {
-
+            loading = ProgressDialog.show(mContext, null, "Harap Tunggu...", true, false);
+            Intent intent = new Intent(MenuActivity.this, KandangActivity.class);
+            startActivity(intent);
         }  else if (id == R.id.btlogout) {
             loading = ProgressDialog.show(mContext, null, "Harap Tunggu...", true, false);
             SharePrefManager.getInstance(MenuActivity.this).clear();
@@ -280,4 +341,63 @@ public class MenuActivity extends AppCompatActivity
         super.onResume();
         suhu();
     }
+
+    public class DownloadNews extends AsyncTask<String, Void, String> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+        }
+        protected String doInBackground(String... args) {
+            String xml = "";
+
+            String urlParameters = "";
+            xml = Function.excuteGet("https://newsapi.org/v1/articles?source="+NEWS_SOURCE+"&sortBy=top&apiKey="+API_KEY, urlParameters);
+            return  xml;
+        }
+        @Override
+        protected void onPostExecute(String xml) {
+
+            if(xml.length()>10){ // проверяет, если нет пусто
+
+                try {
+                    JSONObject jsonResponse = new JSONObject(xml);
+                    JSONArray jsonArray = jsonResponse.optJSONArray("articles");
+
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        HashMap<String, String> map = new HashMap<>();
+                        map.put(KEY_AUTHOR, jsonObject.optString(KEY_AUTHOR).toString());
+                        map.put(KEY_TITLE, jsonObject.optString(KEY_TITLE).toString());
+                        map.put(KEY_DESCRIPTION, jsonObject.optString(KEY_DESCRIPTION).toString());
+                        map.put(KEY_URL, jsonObject.optString(KEY_URL).toString());
+                        map.put(KEY_URLTOIMAGE, jsonObject.optString(KEY_URLTOIMAGE).toString());
+                        map.put(KEY_PUBLISHEDAT, jsonObject.optString(KEY_PUBLISHEDAT).toString());
+                        dataList.add(map);
+                    }
+                } catch (JSONException e) {
+                    Toast.makeText(getApplicationContext(), "Unexpected error", Toast.LENGTH_SHORT).show();
+                }
+
+                ListNewsAdapter adapter = new ListNewsAdapter(MenuActivity.this,dataList);
+                listNews.setAdapter(adapter);
+
+                listNews.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    public void onItemClick(AdapterView<?> parent, View view,
+                                            int position, long id) {
+                        Intent i = new Intent(MenuActivity.this, DetailNewsActivity.class);
+                        i.putExtra("url", dataList.get(+position).get(KEY_URL));
+                        startActivity(i);
+                    }
+                });
+
+            }else{
+                Toast.makeText(getApplicationContext(), "No news found", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+
+
+    }
+
 }

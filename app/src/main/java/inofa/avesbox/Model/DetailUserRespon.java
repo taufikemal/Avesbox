@@ -10,7 +10,7 @@ public class DetailUserRespon {
     @Expose
     private int code;
 
-    @SerializedName("result")
+    @SerializedName("data")
     @Expose
     private ArrayList<DetailUser> detailUser = null;
 
@@ -30,7 +30,7 @@ public class DetailUserRespon {
     public ArrayList<DetailUser> getDetailUser() {
         return detailUser;
     }
-
+//
     public void setDetailUser(ArrayList<DetailUser> detailUser) {
         this.detailUser = detailUser;
     }

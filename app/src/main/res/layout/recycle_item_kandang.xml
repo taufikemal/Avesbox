@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <RelativeLayout
+        android:id="@+id/layoutdaftarkandangLocal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/PutihBiruDikit">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nomor Kandang :"
+            android:textSize="18dp"/>
+        <TextView
+            android:id="@+id/TVidKandang"
+            android:layout_width="wrap_content"
+            android:text="2"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="150dp"
+            android:textSize="18dp"/>
+        <TextView
+            android:id="@+id/TVnamaPemilik"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/TVidKandang"
+            android:text="Kriswahyudi"
+            android:textSize="15dp" />
+        <TextView
+            android:id="@+id/TValamatKandang"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/TVnamaPemilik"
+            android:text="Jl. Kyai Mojo Nomor 30 Surakarta"
+            android:textSize="15dp" />
+
+    </RelativeLayout>
+    <View
+        android:layout_below="@id/layoutdaftarkandangLocal"
+        android:layout_width="match_parent"
+        android:layout_height="7dp"/>
+</RelativeLayout>

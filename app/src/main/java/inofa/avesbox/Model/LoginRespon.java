@@ -12,9 +12,18 @@ public class LoginRespon {
     @Expose
     private String token;
 
-    public LoginRespon(int code, String token) {
+    @SerializedName("data")
+    @Expose
+    private LoginResponUser dataUser;
+
+    public LoginRespon(int code, String token, LoginResponUser dataUser) {
         this.code = code;
         this.token = token;
+        this.dataUser = dataUser;
+    }
+
+    public LoginResponUser getDataUser() {
+        return dataUser;
     }
 
     public int getCode() {

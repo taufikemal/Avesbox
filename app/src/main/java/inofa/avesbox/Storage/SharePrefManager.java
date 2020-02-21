@@ -3,7 +3,13 @@ package inofa.avesbox.Storage;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.google.gson.Gson;
+
+import java.util.List;
+
+import inofa.avesbox.Model.DetailUserRespon;
 import inofa.avesbox.Model.LoginRespon;
+import inofa.avesbox.Model.LoginResponUser;
 
 public class SharePrefManager {
 
@@ -25,20 +31,33 @@ public class SharePrefManager {
         SharedPreferences sharedPreferences = mContext.getSharedPreferences(SP_AVES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("token", login.getToken());
+        Gson gson = new Gson();
+        String serializeData = gson.toJson(login.getDataUser());
+        editor.putString("data", serializeData);
+        editor.apply();
+    }
+    public void saveUserUpdate(DetailUserRespon detailUserRespon){
+        SharedPreferences sharedPreferences = mContext.getSharedPreferences(SP_AVES, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        Gson gson = new Gson();
+        String serializeData = gson.toJson(detailUserRespon.getDetailUser());
+        editor.putString("data", serializeData);
         editor.apply();
     }
     public boolean isLoggedIn(){
         SharedPreferences sharedPreferences = mContext.getSharedPreferences(SP_AVES, Context.MODE_PRIVATE);
-        return sharedPreferences.getString("id", null) != null;
+        return sharedPreferences.getString("code", null) != null;
     }
 
-    public LoginRespon getUser(){
-        SharedPreferences sharedPreferences = mContext.getSharedPreferences(SP_AVES, Context.MODE_PRIVATE);
-        return new LoginRespon(
-                sharedPreferences.getInt("code",0),
-                sharedPreferences.getString("token", null)
-        );
-    }
+//    public LoginRespon getUser(){
+//        SharedPreferences sharedPreferences = mContext.getSharedPreferences(SP_AVES, Context.MODE_PRIVATE);
+//        return new LoginRespon(
+//                sharedPreferences.getInt("code",0),
+//                sharedPreferences.getString("token", null),
+//                sharedPreferences.getString("data", "")
+//        );
+//    }
+
     public void clear(){
         SharedPreferences sharedPreferences = mContext.getSharedPreferences(SP_AVES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();

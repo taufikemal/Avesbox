@@ -1,6 +1,8 @@
 package inofa.avesbox;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,6 +11,7 @@ import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
@@ -17,9 +20,14 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.DefaultAxisValueFormatter;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.google.gson.JsonArray;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.List;
 
 import inofa.avesbox.Model.DataSensor;
 import inofa.avesbox.Model.DataSensorRespon;
@@ -32,73 +40,27 @@ import retrofit2.Response;
 
 public class AirPakanActivity extends AppCompatActivity  {
 
-    private LineChart mCahrt;
+    private LineChart mChart;
     Context mContex;
+    ArrayList<Entry> x;
+    ArrayList<String> y;
+    public String TAG = "YOUR CLASS NAME";
+    List<Float> list = new ArrayList<Float>();
+    List<Entry> values = new ArrayList<Entry>();
+//    JSONArray jsonArray = new JSONArray(yValues);
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_air_pakan);
-        mCahrt = findViewById(R.id.chartSuhu);
-        mCahrt.setTouchEnabled(true);
-        mCahrt.setPinchZoom(true);
-        mCahrt.setDragEnabled(true);
-        mCahrt.setScaleEnabled(true);
-
-
-        mCahrt.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
-
-
-        ArrayList<Entry> yValues = new ArrayList<>();
-
-        yValues.add(new Entry(0, 60f));
-        yValues.add(new Entry(1, 50f));
-        yValues.add(new Entry(2, 70f));
-        yValues.add(new Entry(3, 30f));
-        yValues.add(new Entry(4, 50f));
-        yValues.add(new Entry(5, 60f));
-
-        LineDataSet lineDataSet1 = new LineDataSet(yValues, "Dataset1");
-        lineDataSet1.setFillAlpha(110);
-        lineDataSet1.setColor((R.color.WarnaDominan));
-        lineDataSet1.setLineWidth(3f);
-        lineDataSet1.setValueTextSize(15f);
-
-        ArrayList<ILineDataSet> dataSet = new ArrayList<>();
-        dataSet.add(lineDataSet1);
-        setData();
-//        LineDataSet lineDataSet = new LineDataSet(setData(),"Suhu");
-//        lineDataSet.setColor(ContextCompat.getColor(this, R.color.BiruSoft));
-//        lineDataSet.setValueTextColor(ContextCompat.getColor(this, R.color.WarnaDominan));
-//        XAxis xAxis = mCahrt.getXAxis();
-//        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-//        final DefaultAxisValueFormatter valueFormatter = new DefaultAxisValueFormatter(){
-//            @Override
-//            public int getAxisLabel(float value, AxisBase axis){
-////                for (int i =0; i < setData().size(); ){
-////                    getAxisLabel()
-////                }
-//            }
-//        };
-//        xAxis.setGranularity(1f);
-////        xAxis.setValueFormatter();
-//        YAxis yAxisRight = mCahrt.getAxisRight();
-//        yAxisRight.setEnabled(false);
-//
-//        YAxis yAxisLeft = mCahrt.getAxisLeft();
-//        yAxisLeft.setGranularity(1f);
-
-//        LineData data = new LineData(lineDataSet1);
-//        mCahrt.setData(data);
-//        mCahrt.animateX(2500);
-//        mCahrt.invalidate();
+        drawLineChart();
 
     }
-    private ArrayList setData() {
 
-        final ArrayList<DataSensor> arraydata = new ArrayList<>();
-        LoginRespon loginRespon = SharePrefManager.getInstance(this).getUser();
-        String token = loginRespon.getToken();
+    private void setData() {
+        SharedPreferences shfm = getSharedPreferences("spAvesBox", MODE_PRIVATE);
+        String token = shfm.getString("token", "");
         // retrofit suhu
         Call<DataSensorRespon> call = ApiClient
                 .getInstance()
@@ -117,10 +79,13 @@ public class AirPakanActivity extends AppCompatActivity  {
                                 DataSensor dataSensor = arrayDataSensor.get(i);
                                 if (dataSensor.getKodeSensor() == 1) {
                                     filterDataSuhu.add(dataSensor);
-                                    filterDataSuhu = arraydata;
+                                    for (int a =0; a < filterDataSuhu.size(); a++){
+                                        float nilai = filterDataSuhu.get(a).getNilai();
+                                        Log.d("TAG", String.valueOf(nilai));
+                                        values.add(new Entry(nilai , nilai));
+                                    }
                                 }
                             }
-
                         }
 
                     }
@@ -134,8 +99,41 @@ public class AirPakanActivity extends AppCompatActivity  {
                 Toast.makeText(mContex, "Something wrong. Please try again later.", Toast.LENGTH_SHORT).show();
             }
         });
-
-        return arraydata;
     }
+
+    private void drawLineChart() {
+        LineChart lineChart = findViewById(R.id.chartSuhu);
+//        List<Entry> lineEntries = getDataSet();
+        LineDataSet lineDataSet = new LineDataSet(values, "Air");
+        lineDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
+        lineDataSet.setHighlightEnabled(true);
+        lineDataSet.setLineWidth(2);
+        lineDataSet.setColor(Color.RED);
+        lineDataSet.setCircleColor(Color.YELLOW);
+        lineDataSet.setCircleRadius(6);
+        lineDataSet.setCircleHoleRadius(3);
+        lineDataSet.setDrawHighlightIndicators(true);
+        lineDataSet.setHighLightColor(Color.RED);
+        lineDataSet.setValueTextSize(12);
+        lineDataSet.setValueTextColor(Color.DKGRAY);
+
+        LineData lineData = new LineData(lineDataSet);
+        lineChart.getDescription().setText("Air");
+        lineChart.getDescription().setTextSize(12);
+        lineChart.setDrawMarkers(true);
+        lineChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTH_SIDED);
+        lineChart.animateY(1000);
+        lineChart.getXAxis().setGranularityEnabled(true);
+        lineChart.getXAxis().setGranularity(1.0f);
+        lineChart.getXAxis().setLabelCount(lineDataSet.getEntryCount());
+        if (values.isEmpty()) {
+            lineChart.clear();
+        } else {
+            // set data
+            lineChart.setData(lineData);
+        }
+//        lineChart.setData(lineData);
+    }
+
 
 }

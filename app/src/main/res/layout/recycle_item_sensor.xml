@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="5dp"
+    android:background="@color/WarnaDasar">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:text="Kode Sensor"
+        android:textSize="17dp" />
+    <TextView
+        android:id="@+id/idTVSensor1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="115dp"
+        android:text="1"
+        android:textSize="17dp" />
+
+    <TextView
+        android:id="@+id/jenisTVSensor1"
+        android:layout_below="@id/updateTVsensor1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="150dp"
+        android:text="Keterangan"
+        android:textSize="16dp" />
+
+    <TextView
+        android:id="@+id/updateTVsensor1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="150dp"
+        android:text="Update terakhir"
+        android:textSize="16dp" />
+
+
+</RelativeLayout>

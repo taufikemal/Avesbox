@@ -27,12 +27,12 @@
             android:layout_height="match_parent"
             android:layout_marginTop="10dp">
             <TextView
-                android:id="@+id/localTVNama"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Nama Pengguna :"
                 android:textSize="15dp"/>
             <TextView
+                android:id="@+id/localTVNama"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Rudi Hidayat"
@@ -40,7 +40,6 @@
                 android:layout_marginLeft="150dp"/>
             <TextView
                 android:layout_below="@id/localTVNama"
-                android:id="@+id/localTVUsername"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Username :"
@@ -48,6 +47,7 @@
                 android:layout_marginTop="10dp"/>
             <TextView
                 android:layout_below="@id/localTVNama"
+                android:id="@+id/localTVUsername"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="rudihi"
@@ -56,13 +56,13 @@
                 android:layout_marginLeft="150dp"/>
             <TextView
                 android:layout_below="@id/localTVUsername"
-                android:id="@+id/localTVAlamat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Alamat :"
                 android:textSize="15dp"
                 android:layout_marginTop="10dp"/>
             <TextView
+                android:id="@+id/localTVAlamat"
                 android:layout_below="@id/localTVUsername"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -77,9 +77,19 @@
                 android:layout_width="250dp"
                 android:layout_height="30dp"
                 android:background="@color/WarnaOrnamen"
-                android:text="Update Profil"
+                android:text="Edit Profil"
                 android:textColor="@color/Putih"
                 android:layout_marginTop="20dp"
+                android:layout_centerHorizontal="true"/>
+            <Button
+                android:id="@+id/buttonUpdatePassword"
+                android:layout_below="@id/buttonUpdateProfil"
+                android:layout_width="250dp"
+                android:layout_height="30dp"
+                android:background="@color/colorPrimaryDark"
+                android:text="Edit Password"
+                android:textColor="@color/Putih"
+                android:layout_marginTop="15dp"
                 android:layout_centerHorizontal="true"/>
 
         </RelativeLayout>

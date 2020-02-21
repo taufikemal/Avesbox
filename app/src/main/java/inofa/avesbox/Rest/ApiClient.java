@@ -4,7 +4,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
-    public static final String BASE_URL = "http://api.avesbox.com/";
+    public static final String BASE_URL = "http://avesbox.technow.id/";
     private static Retrofit retrofit = null;
     private static ApiClient mInstance;
     public  ApiClient() {
