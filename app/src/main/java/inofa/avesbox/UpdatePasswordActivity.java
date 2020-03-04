@@ -46,7 +46,8 @@ public class UpdatePasswordActivity extends AppCompatActivity {
             }
         });
     }
-    public void changePass(){
+
+    public void changePass() {
         String oldPass = etOldPass.getText().toString().trim();
         String newPass = etNewPass.getText().toString().trim();
         String newConfirmPass = etNewConfirmPass.getText().toString().trim();
@@ -57,21 +58,18 @@ public class UpdatePasswordActivity extends AppCompatActivity {
             etOldPass.requestFocus();
             return;
         }
-
         if (oldPass.length() < 8) {
             loading.dismiss();
             etOldPass.setError("Password should be at least 8 characters long");
             etOldPass.requestFocus();
             return;
         }
-
         if (newPass.isEmpty()) {
             loading.dismiss();
             etNewPass.setError("New Password is required");
             etNewPass.requestFocus();
             return;
         }
-
         if (newPass.length() < 8) {
             loading.dismiss();
             etNewPass.setError("Password should be at least 8 characters long");
@@ -108,9 +106,8 @@ public class UpdatePasswordActivity extends AppCompatActivity {
         Call<UpdatePassRespon> call = ApiClient
                 .getInstance()
                 .getApi()
-                .updatePassUser(token, id,oldPass , newPass, newConfirmPass);
+                .updatePassUser(token, id, oldPass, newPass, newConfirmPass);
         call.enqueue(new Callback<UpdatePassRespon>() {
-
             @Override
             public void onResponse(Call<UpdatePassRespon> call, Response<UpdatePassRespon> response) {
                 loading.dismiss();
@@ -119,13 +116,11 @@ public class UpdatePasswordActivity extends AppCompatActivity {
                     if (changePassUserResponse.getCode() == 200) {
                         Toast.makeText(mContext, "Password changed", Toast.LENGTH_LONG).show();
                         UpdatePasswordActivity.this.finish();
-                    }
-                    else {
+                    } else {
                         Toast.makeText(mContext, "Old Password is incorrect!", Toast.LENGTH_LONG).show();
                     }
                 }
             }
-
             @Override
             public void onFailure(Call<UpdatePassRespon> call, Throwable t) {
                 loading.dismiss();

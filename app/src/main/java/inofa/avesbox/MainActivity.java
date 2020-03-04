@@ -25,10 +25,12 @@ public class MainActivity extends AppCompatActivity {
                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                        startActivity(intent);
                     }else{
-                    Intent login = new Intent(MainActivity.this, LoginActivity.class);
-                    startActivity(login);
-                    finish();}
+                Intent login = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(login);
+                finish();
+            }
             }
         }, waktu_loading);
     }
+
 }

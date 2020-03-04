@@ -16,6 +16,7 @@ public class SharePrefManager {
     private static final String SP_AVES = "spAvesBox";
     private static SharePrefManager mInstance;
     private Context mContext;
+    private static boolean defVal = true;
 
     private SharePrefManager(Context mContext){
         this.mContext = mContext;
@@ -34,6 +35,7 @@ public class SharePrefManager {
         Gson gson = new Gson();
         String serializeData = gson.toJson(login.getDataUser());
         editor.putString("data", serializeData);
+        editor.putInt("id_users", login.getDataUser().getId_users());
         editor.apply();
     }
     public void saveUserUpdate(DetailUserRespon detailUserRespon){
@@ -46,7 +48,8 @@ public class SharePrefManager {
     }
     public boolean isLoggedIn(){
         SharedPreferences sharedPreferences = mContext.getSharedPreferences(SP_AVES, Context.MODE_PRIVATE);
-        return sharedPreferences.getString("code", null) != null;
+        return sharedPreferences.getString("token", null) != null;
+//        return sharedPreferences.getInt("id_users", 0) ;
     }
 
 //    public LoginRespon getUser(){

@@ -6,15 +6,12 @@
     android:layout_height="match_parent"
     android:background="@color/Putih"
     tools:context=".SuhuLembapActivity">
-    <android.support.design.widget.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <android.support.v7.widget.ActionBarContextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/BiruSoft">
 
-        </android.support.v7.widget.ActionBarContextView>
-    </android.support.design.widget.AppBarLayout>
+    <lecho.lib.hellocharts.view.LineChartView
+        android:id="@+id/chart"
+        android:layout_width="match_parent"
+        android:layout_height="400dp">
+
+    </lecho.lib.hellocharts.view.LineChartView>
 
 </RelativeLayout>

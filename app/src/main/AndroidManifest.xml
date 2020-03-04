@@ -3,6 +3,7 @@
     package="inofa.avesbox">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -11,7 +12,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".UpdateProfilActivity"></activity>
+        <activity android:name=".UpdatePasswordActivity"></activity>
+        <activity android:name=".DetailNewsActivity" />
+        <activity android:name=".KandangActivity" />
+        <activity android:name=".UpdateProfilActivity" />
         <activity android:name=".SensorActivity" />
         <activity android:name=".ProfilActivity" />
         <activity android:name=".AirPakanActivity" />
@@ -20,7 +24,6 @@
             android:label="@string/title_activity_menu"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".SuhuLembapActivity" />
-        <activity android:name=".HomeActivity" />
         <activity
             android:name=".LoginActivity"
             android:windowSoftInputMode="stateVisible|adjustResize" />

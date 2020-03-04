@@ -79,6 +79,9 @@ public class MenuActivity extends AppCompatActivity
     public static final String KEY_URLTOIMAGE = "urlToImage";
     public static final String KEY_PUBLISHEDAT = "publishedAt";
 
+    NavigationView navigationView;
+    TextView tvNama;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,14 +99,12 @@ public class MenuActivity extends AppCompatActivity
         listNews.setEmptyView(loader);
 
 
-        if(Function.isNetworkAvailable(getApplicationContext()))
-        {
+        if (Function.isNetworkAvailable(getApplicationContext())) {
             DownloadNews newsTask = new DownloadNews();
             newsTask.execute();
-        }else{
+        } else {
             Toast.makeText(getApplicationContext(), "No Internet Connection", Toast.LENGTH_LONG).show();
         }
-
 
         //Salam Sapaan//
         TVGreeting = findViewById(R.id.TVgreeting);
@@ -130,26 +131,17 @@ public class MenuActivity extends AppCompatActivity
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
+        drawer.refreshDrawableState();
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        //header sidebar
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        //nav header menu
-        SharedPreferences shfm = getSharedPreferences("spAvesBox", MODE_PRIVATE);
-        Gson gson = new Gson();
-        String data = shfm.getString("data", "");
-        LoginResponUser user = gson.fromJson(data, LoginResponUser.class);
-        String nama = user.getNama();
-
         View hView = navigationView.inflateHeaderView(R.layout.navigation_header_menu);
-//        hView = findViewById(R.id.profilBoard);
-        ImageView fotprof = (ImageView)hView.findViewById(R.id.myPict);
-        TextView tvNama = (TextView)hView.findViewById(R.id.tvNama);
+        ImageView fotprof = (ImageView) hView.findViewById(R.id.myPict);
+        tvNama = (TextView) hView.findViewById(R.id.tvNama);
         fotprof.setImageResource(R.mipmap.iconprofil);
-        tvNama.setText(nama);
-
-
 
         //Refresh
         refresh = new Runnable() {
@@ -178,6 +170,7 @@ public class MenuActivity extends AppCompatActivity
             public void onScrollStateChanged(AbsListView view, int scrollState) {
 
             }
+
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
                 if (listNews.getChildAt(0) != null) {
@@ -185,7 +178,6 @@ public class MenuActivity extends AppCompatActivity
                 }
             }
         });
-
 
 
         //Inten Menu
@@ -207,16 +199,16 @@ public class MenuActivity extends AppCompatActivity
                 startActivity(intent);
             }
         });
-        //inten halaman profil
-//        LinearLayout detailProfil = findViewById(R.id.buttonProfil);
-//        detailProfil.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent i = new Intent(MenuActivity.this, ProfilActivity.class);
-//                startActivity(i);
-//            }
-//        });
+       LinearLayout MenuSuhuKelembapan = findViewById(R.id.buttonSuhuKelembapan);
+       MenuSuhuKelembapan.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               Intent intent = new Intent(MenuActivity.this, SuhuLembapActivity.class);
+               startActivity(intent);
+           }
+       });
     }
+
 
     public void suhu() {
 
@@ -247,14 +239,12 @@ public class MenuActivity extends AppCompatActivity
                                     float suhu = filterDataSuhu.get(filterDataSuhu.size() - 1).getNilai();
                                     DecimalFormat decimalFormat = new DecimalFormat("#.##");
                                     TvSuhu.setText(String.valueOf(decimalFormat.format(suhu)));
-                                }
-                                else if (dataSensor.getKodeSensor() == 5){
+                                } else if (dataSensor.getKodeSensor() == 5) {
                                     filterDataSuhu.add(dataSensor);
                                     float pakan = filterDataSuhu.get(filterDataSuhu.size() - 1).getNilai();
                                     DecimalFormat decimalFormat = new DecimalFormat("#.##");
                                     TvPakan.setText(String.valueOf(decimalFormat.format(pakan)));
-                                }
-                                else if (dataSensor.getKodeSensor() == 6){
+                                } else if (dataSensor.getKodeSensor() == 6) {
                                     filterDataSuhu.add(dataSensor);
                                     float air = filterDataSuhu.get(filterDataSuhu.size() - 1).getNilai();
                                     DecimalFormat decimalFormat = new DecimalFormat("#.##");
@@ -299,7 +289,6 @@ public class MenuActivity extends AppCompatActivity
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -307,7 +296,6 @@ public class MenuActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
-
         if (id == R.id.nav_profil) {
             // Handle the camera action
             Intent i = new Intent(MenuActivity.this, ProfilActivity.class);
@@ -316,15 +304,14 @@ public class MenuActivity extends AppCompatActivity
             loading = ProgressDialog.show(mContext, null, "Harap Tunggu...", true, false);
             Intent intent = new Intent(MenuActivity.this, KandangActivity.class);
             startActivity(intent);
-        }  else if (id == R.id.btlogout) {
-            loading = ProgressDialog.show(mContext, null, "Harap Tunggu...", true, false);
+        } else if (id == R.id.btlogout) {
+//            loading = ProgressDialog.show(mContext, null, "Harap Tunggu...", true, false);
             SharePrefManager.getInstance(MenuActivity.this).clear();
-            Toast.makeText(mContext,"Logout successfully", Toast.LENGTH_LONG).show();
+            Toast.makeText(mContext, "Logout successfully", Toast.LENGTH_LONG).show();
             Intent intent = new Intent(MenuActivity.this, LoginActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
         }
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
@@ -340,30 +327,39 @@ public class MenuActivity extends AppCompatActivity
     protected void onResume() {
         super.onResume();
         suhu();
+        sidebar();
+
+
+    }
+
+    public void sidebar() {
+        SharedPreferences shfm = getSharedPreferences("spUser", MODE_PRIVATE);
+        Gson gson = new Gson();
+        String data = shfm.getString("data", "");
+        LoginResponUser user = gson.fromJson(data, LoginResponUser.class);
+        String nama = user.getNama();
+        tvNama.setText(nama);
     }
 
     public class DownloadNews extends AsyncTask<String, Void, String> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-
         }
+
         protected String doInBackground(String... args) {
             String xml = "";
-
             String urlParameters = "";
-            xml = Function.excuteGet("https://newsapi.org/v1/articles?source="+NEWS_SOURCE+"&sortBy=top&apiKey="+API_KEY, urlParameters);
-            return  xml;
+            xml = Function.excuteGet("https://newsapi.org/v1/articles?source=" + NEWS_SOURCE + "&sortBy=top&apiKey=" + API_KEY, urlParameters);
+            return xml;
         }
+
         @Override
         protected void onPostExecute(String xml) {
-
-            if(xml.length()>10){ // проверяет, если нет пусто
-
+            if (xml.length() > 10) { // проверяет, если нет пусто
                 try {
                     JSONObject jsonResponse = new JSONObject(xml);
                     JSONArray jsonArray = jsonResponse.optJSONArray("articles");
-
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
                         HashMap<String, String> map = new HashMap<>();
@@ -379,7 +375,7 @@ public class MenuActivity extends AppCompatActivity
                     Toast.makeText(getApplicationContext(), "Unexpected error", Toast.LENGTH_SHORT).show();
                 }
 
-                ListNewsAdapter adapter = new ListNewsAdapter(MenuActivity.this,dataList);
+                ListNewsAdapter adapter = new ListNewsAdapter(MenuActivity.this, dataList);
                 listNews.setAdapter(adapter);
 
                 listNews.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -391,11 +387,10 @@ public class MenuActivity extends AppCompatActivity
                     }
                 });
 
-            }else{
+            } else {
                 Toast.makeText(getApplicationContext(), "No news found", Toast.LENGTH_SHORT).show();
             }
         }
-
 
 
     }

@@ -8,4 +8,14 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_menu">Kandang 1</string>
+
+    <string name="periode_prompt">Choose a periode</string>
+
+    <string-array name="periode_arrays">
+        <item>Hari</item>
+        <item>Minggu</item>
+        <item>Bulan</item>
+        <item>Semua</item>
+    </string-array>
+
 </resources>

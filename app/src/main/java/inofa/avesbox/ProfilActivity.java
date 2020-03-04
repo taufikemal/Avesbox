@@ -35,7 +35,13 @@ public class ProfilActivity extends AppCompatActivity {
 
             }
         });
-        SharedPreferences shfm = getSharedPreferences("spAvesBox", MODE_PRIVATE);
+
+
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        SharedPreferences shfm = getSharedPreferences("spUser", MODE_PRIVATE);
         Gson gson = new Gson();
         String data = shfm.getString("data", "");
         LoginResponUser user = gson.fromJson(data, LoginResponUser.class);

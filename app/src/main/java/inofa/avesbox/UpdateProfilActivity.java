@@ -20,6 +20,7 @@ import inofa.avesbox.Model.LoginRespon;
 import inofa.avesbox.Model.LoginResponUser;
 import inofa.avesbox.Rest.ApiClient;
 import inofa.avesbox.Storage.SharePrefManager;
+import inofa.avesbox.Storage.SharePrefManagerUser;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -44,7 +45,7 @@ public class UpdateProfilActivity extends AppCompatActivity {
         ETalamat = findViewById(R.id.localETAlamat);
         ButtonSimpan = findViewById(R.id.ButtonSimpanDataProfil);
 
-        SharedPreferences shfm = getSharedPreferences("spAvesBox", MODE_PRIVATE);
+        SharedPreferences shfm = getSharedPreferences("spUser", MODE_PRIVATE);
         Gson gson = new Gson();
         String data = shfm.getString("data", "");
         LoginResponUser user = gson.fromJson(data, LoginResponUser.class);
@@ -55,8 +56,7 @@ public class UpdateProfilActivity extends AppCompatActivity {
         ETnama.setText(nama);
         ETusername.setText(username);
         ETalamat.setText(alamat);
-
-//        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         ButtonSimpan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -105,22 +105,27 @@ public class UpdateProfilActivity extends AppCompatActivity {
                 DetailUserRespon detailUserRespon = response.body();
                 loading.dismiss();
                 if (response.isSuccessful()) {
+                    Log.e("status", "a");
                     if (detailUserRespon.getCode() == 200) {
-                        SharePrefManager.getInstance(UpdateProfilActivity.this).saveUserUpdate(detailUserRespon);
+                        Log.e("status", "b");
+                        SharePrefManagerUser.getInstance(UpdateProfilActivity.this).saveUserUpdate(detailUserRespon.getDetailUser());
                         Toast.makeText(mContext, "Profil diperbaharui", Toast.LENGTH_LONG).show();
-                        Intent intent = new Intent(UpdateProfilActivity.this, ProfilActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(intent);
+                        onBackPressed();
+//                        Intent intent = new Intent(UpdateProfilActivity.this, ProfilActivity.class);
+//                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                        startActivity(intent);
                     }
-//                    else {
-//                        Toast.makeText(mContext, "Data salah!", Toast.LENGTH_LONG).show();
-//                    }
+                    else {
+                        Toast.makeText(mContext, "Silahkan Login Ulang", Toast.LENGTH_LONG).show();
+                        Log.e("status", "c");
+                    }
                 }
             }
 
             @Override
             public void onFailure(Call<DetailUserRespon> call, Throwable t) {
                 loading.dismiss();
+                Log.e("status", "d");
                 Log.e("debug", "onFailure: ERROR > " + t.toString());
                 Toast.makeText(mContext, "Something wrong. Please try again later.", Toast.LENGTH_SHORT).show();
             }

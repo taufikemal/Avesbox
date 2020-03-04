@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:background="@color/Abu"
     tools:context=".AirPakanActivity">
-
     <android.support.design.widget.AppBarLayout
         android:id="@+id/tolbarAir"
         android:layout_width="match_parent"
@@ -23,6 +22,7 @@
                 android:layout_height="35dp"
                 android:src="@drawable/arrow_back" />
             <TextView
+                android:id="@+id/Tvheadername"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="25dp"
@@ -32,17 +32,34 @@
                 android:textStyle="bold" />
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
+    <android.support.v7.widget.CardView
+        android:id="@+id/cardview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/tolbarAir"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        app:cardCornerRadius="5dp">
+        <Spinner
+            android:id="@+id/spinnerPeriode"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tolbarAir"
+            android:layout_alignParentRight="true"
+            android:spinnerMode="dropdown">
+        </Spinner>
+
+    </android.support.v7.widget.CardView>
 
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/chartSuhu"
         android:layout_width="match_parent"
         android:layout_height="280dp"
-        android:layout_below="@id/tolbarAir"
+        android:layout_below="@id/cardview"
         android:layout_marginHorizontal="10dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="10dp"
         android:background="@color/Putih">
-
-
     </com.github.mikephil.charting.charts.LineChart>
 
 </RelativeLayout>

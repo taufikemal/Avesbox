@@ -12,9 +12,9 @@ public class DetailUserRespon {
 
     @SerializedName("data")
     @Expose
-    private ArrayList<DetailUser> detailUser = null;
+    private LoginResponUser detailUser ;
 
-    public DetailUserRespon(int code, ArrayList<DetailUser> detailUser){
+    public DetailUserRespon(int code, LoginResponUser detailUser){
         this.code = code;
         this.detailUser = detailUser;
     }
@@ -27,11 +27,11 @@ public class DetailUserRespon {
         this.code = code;
     }
 
-    public ArrayList<DetailUser> getDetailUser() {
+    public LoginResponUser getDetailUser() {
         return detailUser;
     }
 //
-    public void setDetailUser(ArrayList<DetailUser> detailUser) {
+    public void setDetailUser(LoginResponUser detailUser) {
         this.detailUser = detailUser;
     }
 }

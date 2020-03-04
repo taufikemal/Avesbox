@@ -38,7 +38,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class SensorActivity extends AppCompatActivity {
-    private ArrayList<DataSensor> sensorList;
     private RecyclerView recyclerView;
     private AdapterListSensor lAdapter;
     private SwipeRefreshLayout swipeRefresh;
@@ -52,19 +51,13 @@ public class SensorActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sensor);
 
-        sensorList = new ArrayList<>();
         mContext = this;
-        layoutListSensor = findViewById(R.id.layoutListSensor);
-//        recyclerView = findViewById(R.id.recycleSensor);
         swipeRefresh = findViewById(R.id.swipeRefresh);
         swipeRefresh.setEnabled(true);
         loading = ProgressDialog.show(mContext, null, "Harap Tunggu...", true, false);
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                if (lAdapter != null) {
-                    lAdapter.refreshEvents(sensorList);
-                }
                 listSensor();
             }
         });
@@ -78,10 +71,6 @@ public class SensorActivity extends AppCompatActivity {
     }
 
     private void listSensor() {
-//        layoutListSensor.setVisibility(View.VISIBLE);
-//        recyclerView.setVisibility(View.GONE);
-
-
         SharedPreferences shfm = getSharedPreferences("spAvesBox", MODE_PRIVATE);
         String token = shfm.getString("token", "");
         Call<DataSensorRespon> call = ApiClient
@@ -107,9 +96,9 @@ public class SensorActivity extends AppCompatActivity {
                                 DataSensor listSensor = arrayListSensor.get(i);
                                 if (listSensor.getKodeSensor() == 3) {
                                     dataAakhir1.add(listSensor);
-                                    int id = dataAakhir1.get(dataAakhir1.size()-1).getKodeSensor();
-                                    String nama = dataAakhir1.get(dataAakhir1.size()-1).getNamaSensor();
-                                    String update = dataAakhir1.get(dataAakhir1.size()-1).getTanggal();
+                                    int id = dataAakhir1.get(dataAakhir1.size() - 1).getKodeSensor();
+                                    String nama = dataAakhir1.get(dataAakhir1.size() - 1).getNamaSensor();
+                                    String update = dataAakhir1.get(dataAakhir1.size() - 1).getTanggal();
                                     TextView idTV1 = findViewById(R.id.idSensor1);
                                     TextView namaTV1 = findViewById(R.id.jenisSensor1);
                                     TextView updateTV1 = findViewById(R.id.updateSensor1);
@@ -118,9 +107,9 @@ public class SensorActivity extends AppCompatActivity {
                                     updateTV1.setText(String.valueOf(update));
                                 } else if (listSensor.getKodeSensor() == 4) {
                                     dataAakhir2.add(listSensor);
-                                    int id = dataAakhir2.get(dataAakhir2.size()-1).getKodeSensor();
-                                    String nama = dataAakhir2.get(dataAakhir2.size()-1).getNamaSensor();
-                                    String update = dataAakhir2.get(dataAakhir2.size()-1).getTanggal();
+                                    int id = dataAakhir2.get(dataAakhir2.size() - 1).getKodeSensor();
+                                    String nama = dataAakhir2.get(dataAakhir2.size() - 1).getNamaSensor();
+                                    String update = dataAakhir2.get(dataAakhir2.size() - 1).getTanggal();
                                     TextView idTV2 = findViewById(R.id.idSensor2);
                                     TextView namaTV2 = findViewById(R.id.jenisSensor2);
                                     TextView updateTV2 = findViewById(R.id.updateSensor2);
@@ -129,9 +118,9 @@ public class SensorActivity extends AppCompatActivity {
                                     updateTV2.setText(String.valueOf(update));
                                 } else if (listSensor.getKodeSensor() == 5) {
                                     dataAakhir3.add(listSensor);
-                                    int id = dataAakhir3.get(dataAakhir3.size()-1).getKodeSensor();
-                                    String nama = dataAakhir3.get(dataAakhir3.size()-1).getNamaSensor();
-                                    String update = dataAakhir3.get(dataAakhir3.size()-1).getTanggal();
+                                    int id = dataAakhir3.get(dataAakhir3.size() - 1).getKodeSensor();
+                                    String nama = dataAakhir3.get(dataAakhir3.size() - 1).getNamaSensor();
+                                    String update = dataAakhir3.get(dataAakhir3.size() - 1).getTanggal();
                                     TextView idTV3 = findViewById(R.id.idSensor3);
                                     TextView namaTV3 = findViewById(R.id.jenisSensor3);
                                     TextView updateTV3 = findViewById(R.id.updateSensor3);
@@ -140,9 +129,9 @@ public class SensorActivity extends AppCompatActivity {
                                     updateTV3.setText(String.valueOf(update));
                                 } else if (listSensor.getKodeSensor() == 6) {
                                     dataAakhir4.add(listSensor);
-                                    int id = dataAakhir4.get(dataAakhir4.size()-1).getKodeSensor();
-                                    String nama = dataAakhir4.get(dataAakhir4.size()-1).getNamaSensor();
-                                    String update = dataAakhir4.get(dataAakhir4.size()-1).getTanggal();
+                                    int id = dataAakhir4.get(dataAakhir4.size() - 1).getKodeSensor();
+                                    String nama = dataAakhir4.get(dataAakhir4.size() - 1).getNamaSensor();
+                                    String update = dataAakhir4.get(dataAakhir4.size() - 1).getTanggal();
                                     TextView idTV4 = findViewById(R.id.idSensor4);
                                     TextView namaTV4 = findViewById(R.id.jenisSensor4);
                                     TextView updateTV4 = findViewById(R.id.updateSensor4);
@@ -150,33 +139,9 @@ public class SensorActivity extends AppCompatActivity {
                                     namaTV4.setText(String.valueOf(nama));
                                     updateTV4.setText(String.valueOf(update));
                                 }
-//                                if (listSensor.getKodeSensor() == 4) {
-//                                    dataAakhir4.add(listSensor);
-//                                    DataSensor list4 = dataAakhir4.get(dataAakhir4.size()-1);
-//                                    sensorList.add(list4);
-//                                }
-//                                else if (listSensor.getKodeSensor() == 5) {
-//                                    dataAakhir5.add(listSensor);
-//                                    DataSensor list5 = dataAakhir5.get(dataAakhir5.size()-1);
-//                                    sensorList.add(list5);
-////                                    String vv = dataAakhir5.get(dataAakhir5.size()-1).getTanggal();
-////                                    TextView tv = findViewById(R.id.localTVSensor);
-////                                    tv.setText(vv);
-//                                }
                             }
-//                            sensorList.addAll();
-//                            sensorList.addAll(dataAakhir5);
                         }
                     }
-//                  recyclerView.setVisibility(View.VISIBLE);
-                    //filter if()
-//                  sensorList = response.body().getDataSensors();
-
-//                    lAdapter = new AdapterListSensor(sensorList);
-//                    RecyclerView.LayoutManager eLayoutManager = new LinearLayoutManager(getApplicationContext());
-//                    recyclerView.setLayoutManager(eLayoutManager);
-//                    recyclerView.setItemAnimator(new DefaultItemAnimator());
-//                    recyclerView.setAdapter(lAdapter);
                 }
                 loading.dismiss();
                 swipeRefresh.setRefreshing(false);
