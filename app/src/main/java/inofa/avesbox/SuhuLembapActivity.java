@@ -1,14 +1,21 @@
 package inofa.avesbox;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.Toast;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,18 +33,50 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class SuhuLembapActivity extends AppCompatActivity {
+public class SuhuLembapActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     LineChartView lineChartView;
     Context mContex;
-    List<String> temperature_data_entry = new ArrayList<>();
-    List<String> temperature_dates_entry = new ArrayList<>();
-    Float nilai;
-    String tanggal;
+    Spinner dropdown;
+    private static final String[] paths = {"5 Data", "10 Data", "15 Data", "20 Data"};
+    int start;
+    ProgressDialog loading;
+    SwipeRefreshLayout swipeRefreshLayout;
+    List<PointValue> yAxisValues = new ArrayList();
+    List<AxisValue> axisValues = new ArrayList();
+
+    List<PointValue> sumbuY = new ArrayList<>();
+    List<AxisValue> sumbuX = new ArrayList<>();
+
+    List<PointValue> sumbuY1 = new ArrayList<>();
+    List<PointValue> yAxisValues1 = new ArrayList();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_suhu_lembap);
+
+        mContex = this;
+        swipeRefreshLayout = findViewById(R.id.swipeRefreshSuhuLembap);
+        swipeRefreshLayout.setEnabled(true);
+        loading = ProgressDialog.show(mContex, null, "Harap Tunggu...", true, false);
+        dropdown = findViewById(R.id.spinnerPeriodeSuhuLembap);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(SuhuLembapActivity.this,
+                android.R.layout.simple_spinner_item, paths);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        dropdown.setAdapter(adapter);
+        dropdown.setOnItemSelectedListener(this);
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                setData();
+            }
+        });
+
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
         setData();
     }
 
@@ -60,54 +99,64 @@ public class SuhuLembapActivity extends AppCompatActivity {
                             // lchart
                             lineChartView = findViewById(R.id.chart);
 
-                            List<PointValue> yAxisValues = new ArrayList();
-                            List<AxisValue> axisValues = new ArrayList();
-                            Line line = new Line(yAxisValues).setColor(Color.parseColor("#9C27B0"));
-                            Log.d("this is my array", "arr: " + TextUtils.join(" ", axisValues));
-
                             for (int i = 0; i < arrayDataSensor.size(); i++) {
                                 DataSensor dataSensor = arrayDataSensor.get(i);
-                                if (dataSensor.getKodeSensor() == 6) {
-                                    List<PointValue> sumbuY = new ArrayList<>();
-                                    List<AxisValue> sumbuX = new ArrayList<>();
+                                if (dataSensor.getKodeSensor() == 4) {
 
-                                    axisValues.add(new AxisValue(i).setLabel(dataSensor.getTanggal()));
+//                                     kodingan asli
+                                    sumbuX.add(new AxisValue(i).setLabel(dataSensor.getTanggal()));
                                     float data = (float) dataSensor.getNilai();
-                                    yAxisValues.add(new PointValue(i, data));
-//                                    axisValues.add(new AxisValue(i).setLabel(dataSensor.getTanggal()));
-//                                    float data = (float) dataSensor.getNilai();
-//                                    yAxisValues.add(new PointValue(i, data));
+                                    sumbuY.add(new PointValue(i, data));
+
+                                }
+                                else if(dataSensor.getKodeSensor() == 6){
+                                    // line 2
+                                    float data = (float) dataSensor.getNilai();
+                                    sumbuY1.add(new PointValue(i, data));
                                 }
                             }
+                            axisValues = sumbuX.subList(sumbuX.size()-start, sumbuX.size());
+                            yAxisValues = sumbuY.subList(sumbuY.size()-start, sumbuY.size());
+                            //line 2
+                            yAxisValues1 = sumbuY1.subList(sumbuY1.size()-start, sumbuY1.size());
 
-                            List lines = new ArrayList();
+                            Line line = new Line(yAxisValues).setColor(Color.parseColor("#9C27B0"));
+//                            line.setStrokeWidth(2);
+//                            line.setPointRadius(0);
+                            Line line2 = new Line(yAxisValues1).setColor(Color.parseColor("#0000FF"));
+                            List<Line> lines = new ArrayList();
                             lines.add(line);
-
+                            lines.add(line2);
                             LineChartData data = new LineChartData();
                             data.setLines(lines);
 
                             Axis axis = new Axis();
                             axis.setValues(axisValues);
-                            axis.setTextSize(16);
+                            axis.setTextSize(6);
+                            axis.getMaxLabelChars();
+                            axis.setName("Suhu");
                             axis.setTextColor(Color.parseColor("#03A9F4"));
+
                             data.setAxisXBottom(axis);
 
                             Axis yAxis = new Axis();
-                            yAxis.setName("Sales in millions");
+//                            yAxis.setName("Sales in millions");
                             yAxis.setTextColor(Color.parseColor("#03A9F4"));
                             yAxis.setTextSize(16);
                             data.setAxisYLeft(yAxis);
 
                             lineChartView.setLineChartData(data);
                             Viewport viewport = new Viewport(lineChartView.getMaximumViewport());
-                            viewport.top = 110;
+                            viewport.top = 40;
                             lineChartView.setMaximumViewport(viewport);
                             lineChartView.setCurrentViewport(viewport);
-
-//                            lchart();
                         }
+                        //
+                        loading.dismiss();
+                        swipeRefreshLayout.setRefreshing(false);
                     }
                 }
+
             }
 
             @Override
@@ -118,17 +167,41 @@ public class SuhuLembapActivity extends AppCompatActivity {
         });
     }
 
-    private void lchart() {
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View v, int position, long id) {
 
-
-        for (int i = 0; i < temperature_dates_entry.size(); i++) {
+        switch (position) {
+            case 0:
+                // Whatever you want to happen when the first item gets selected
+//                axisValues = sumbuX.subList(sumbuX.size()-5, sumbuX.size());
+//                yAxisValues = sumbuY.subList(sumbuY.size()-5, sumbuY.size());
+                start = 5;
+                break;
+            case 1:
+                // Whatever you want to happen when the second item gets selected
+//                axisValues = sumbuX.subList(sumbuX.size()-10, sumbuX.size());
+//                yAxisValues = sumbuY.subList(sumbuY.size()-10, sumbuY.size());
+                start = 10;
+                break;
+            case 2:
+                // Whatever you want to happen when the thrid item gets selected
+//                axisValues = sumbuX.subList(sumbuX.size()-15, sumbuX.size());
+//                yAxisValues = sumbuY.subList(sumbuY.size()-15, sumbuY.size());
+                start = 15;
+                break;
+            case 3:
+                // Whatever you want to happen when the thrid item gets selected
+//                axisValues = sumbuX.subList(sumbuX.size()-20, sumbuX.size());
+//                yAxisValues = sumbuY.subList(sumbuY.size()-20, sumbuY.size());
+                start = 20;
+                break;
 
         }
-
-        for (int i = 0; i < temperature_data_entry.size(); i++) {
-
-        }
-
-
     }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+        // TODO Auto-generated method stub
+    }
+
 }

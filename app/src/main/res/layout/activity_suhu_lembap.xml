@@ -7,11 +7,43 @@
     android:background="@color/Putih"
     tools:context=".SuhuLembapActivity">
 
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshSuhuLembap"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cardviewSuhuLembap"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        app:cardCornerRadius="5dp">
+        <Spinner
+            android:id="@+id/spinnerPeriodeSuhuLembap"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tolbarAir"
+            android:layout_alignParentRight="true"
+            android:spinnerMode="dropdown">
+        </Spinner>
+
+    </android.support.v7.widget.CardView>
+
     <lecho.lib.hellocharts.view.LineChartView
+        android:layout_below="@id/cardviewSuhuLembap"
+        android:layout_marginTop="10dp"
         android:id="@+id/chart"
         android:layout_width="match_parent"
-        android:layout_height="400dp">
+        android:layout_height="400dp"
+        android:padding="10dp">
 
     </lecho.lib.hellocharts.view.LineChartView>
+    </RelativeLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </RelativeLayout>
