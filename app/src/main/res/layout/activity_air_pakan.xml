@@ -1,65 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/Abu"
     tools:context=".AirPakanActivity">
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/tolbarAir"
+<!--    <ScrollView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent">-->
+
+    <RelativeLayout
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/Abu">
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/BiruSoft">
-
-        <android.support.v7.widget.Toolbar
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical">
-
-            <ImageView
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:src="@drawable/arrow_back" />
-            <TextView
-                android:id="@+id/Tvheadername"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="25dp"
-                android:text="Air dan Pakan"
-                android:textColor="@color/Putih"
-                android:textSize="20dp"
-                android:textStyle="bold" />
-        </android.support.v7.widget.Toolbar>
-    </android.support.design.widget.AppBarLayout>
+        android:text="Grafik Air dan Pakan"
+        android:textStyle="bold"
+        android:textSize="18dp"
+        android:layout_centerHorizontal="true"/>
     <android.support.v7.widget.CardView
+        android:layout_below="@id/tvTitle"
         android:id="@+id/cardview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_below="@id/tolbarAir"
-        android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
         app:cardCornerRadius="5dp">
         <Spinner
             android:id="@+id/spinnerPeriode"
             android:layout_width="140dp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tolbarAir"
             android:layout_alignParentRight="true"
             android:spinnerMode="dropdown">
+
         </Spinner>
-
     </android.support.v7.widget.CardView>
+        <TextView
+            android:id="@+id/judulAir"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Grafik Air"
+            android:textSize="15dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginLeft="12dp"/>
 
-    <com.github.mikephil.charting.charts.LineChart
-        android:id="@+id/chartSuhu"
-        android:layout_width="match_parent"
-        android:layout_height="280dp"
-        android:layout_below="@id/cardview"
-        android:layout_marginHorizontal="10dp"
-        android:layout_marginTop="10dp"
-        android:background="@color/Putih">
-    </com.github.mikephil.charting.charts.LineChart>
+        <lecho.lib.hellocharts.view.LineChartView
+            android:id="@+id/chartAirPakan"
+            android:layout_width="match_parent"
+            android:layout_height="270dp"
+            android:layout_below="@id/judulAir"
+            android:layout_marginTop="5dp"
+            android:padding="10dp">
+        </lecho.lib.hellocharts.view.LineChartView>
+        <TextView
+            android:id="@+id/judulPakan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Grafik Pakan"
+            android:layout_marginTop="8dp"
+            android:textSize="15dp"
+            android:layout_below="@id/chartAirPakan"
+            android:layout_marginLeft="12dp"/>
+        <lecho.lib.hellocharts.view.LineChartView
+            android:id="@+id/chartAirPakan2"
+            android:layout_width="match_parent"
+            android:layout_height="270dp"
+            android:layout_below="@id/judulPakan"
+            android:layout_marginTop="5dp"
+            android:padding="10dp">
+        </lecho.lib.hellocharts.view.LineChartView>
 
-</RelativeLayout>
+        </RelativeLayout>
+<!--    </ScrollView>-->
+
+</LinearLayout>

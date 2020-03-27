@@ -1,5 +1,6 @@
 package inofa.avesbox;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -31,29 +32,42 @@ import java.util.List;
 import inofa.avesbox.Model.DataSensor;
 import inofa.avesbox.Model.DataSensorRespon;
 import inofa.avesbox.Rest.ApiClient;
+import lecho.lib.hellocharts.model.Axis;
+import lecho.lib.hellocharts.model.AxisValue;
+import lecho.lib.hellocharts.model.Line;
+import lecho.lib.hellocharts.model.LineChartData;
+import lecho.lib.hellocharts.model.PointValue;
+import lecho.lib.hellocharts.model.Viewport;
+import lecho.lib.hellocharts.view.LineChartView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class AirPakanActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
-    private LineChart mChart;
+    LineChartView lineChartView;
+    LineChartView lineChartView2;
     Context mContex;
-    List<String> temperature_data_entry = new ArrayList<>();
-    List<String> temperature_dates_entry = new ArrayList<>();
+    List<PointValue> temperature_data_entry = new ArrayList<>();
+    List<AxisValue> temperature_dates_entry = new ArrayList<>();
+    ArrayList<DataSensor> arrayDataSensor = new ArrayList<>();
+    List<AxisValue> axisValues = new ArrayList<>();
+    List<PointValue> yAxisValues = new ArrayList<>();
 
-    List<DataSensor> list = new ArrayList<DataSensor>();
-    List<Entry> values = new ArrayList<Entry>();
+    List<PointValue> temperature_data_entry2 = new ArrayList<>();
+    List<AxisValue> temperature_dates_entry2 = new ArrayList<>();
+    List<AxisValue> axisValues2 = new ArrayList<>();
+    List<PointValue> yAxisValues2 = new ArrayList<>();
     Spinner dropdown;
-    private static final String[] paths = {"Hari", "Minggu", "Bulan", "Semua Data"};
-    float nilai;
-    Float tanggal;
+    private static final String[] paths = {"5 Data", "10 Data", "15 Data", "20 Data"};
+    int start;
+    ProgressDialog loading;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_air_pakan);
-
+//        loading = ProgressDialog.show(mContex, null, "Harap Tunggu...", true, false);
         dropdown = findViewById(R.id.spinnerPeriode);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(AirPakanActivity.this,
                 android.R.layout.simple_spinner_item, paths);
@@ -62,12 +76,9 @@ public class AirPakanActivity extends AppCompatActivity implements AdapterView.O
         dropdown.setOnItemSelectedListener(this);
         lineChart();
     }
-
     public void lineChart() {
         SharedPreferences shfm = getSharedPreferences("spAvesBox", MODE_PRIVATE);
         String token = shfm.getString("token", "");
-
-        // retrofit suhu
         Call<DataSensorRespon> call = ApiClient
                 .getInstance()
                 .getApi()
@@ -78,25 +89,54 @@ public class AirPakanActivity extends AppCompatActivity implements AdapterView.O
                 DataSensorRespon dataSensorRespon = response.body();
                 if (response.isSuccessful()) {
                     if (dataSensorRespon.getCode() == 200) {
-                        ArrayList<DataSensor> arrayDataSensor = dataSensorRespon.getDataSensors();
+                       arrayDataSensor = dataSensorRespon.getDataSensors();
                         if (arrayDataSensor.size() > 0) {
                             for (int i = 0; i < arrayDataSensor.size(); i++) {
                                 DataSensor dataSensor = arrayDataSensor.get(i);
                                 if (dataSensor.getKodeSensor() == 5) {
-                                    temperature_data_entry.add(String.valueOf(dataSensor.getNilai()));
-                                    temperature_dates_entry.add(dataSensor.getTanggal());
+                                    float nilai = (float) dataSensor.getNilai();
+                                    temperature_data_entry.add(new PointValue(i, nilai));
+                                    temperature_dates_entry.add(new AxisValue(i).setLabel(dataSensor.getTanggal()));
+
+                                } else if (dataSensor.getKodeSensor() == 4) {
+                                    float nilai = (float) dataSensor.getNilai();
+                                    temperature_data_entry2.add(new PointValue(i, nilai));
+                                    temperature_dates_entry2.add(new AxisValue(i).setLabel(dataSensor.getTanggal()));
                                 }
                             }
+
+
+                            axisValues = temperature_dates_entry.subList(temperature_dates_entry.size() - start, temperature_dates_entry.size());
+                            yAxisValues = temperature_data_entry.subList(temperature_data_entry.size() - start, temperature_data_entry.size());
+                            axisValues2 = temperature_dates_entry2.subList(temperature_dates_entry2.size() - start, temperature_dates_entry2.size());
+                            yAxisValues2 = temperature_data_entry2.subList(temperature_data_entry2.size() - start, temperature_data_entry2.size());
+                            Line line = new Line(yAxisValues).setColor(Color.parseColor("#9C27B0"));
+                            List<Line> lines = new ArrayList();
+                            lines.add(line);
+                            LineChartData data = new LineChartData();
+                            data.setLines(lines);
+                            Axis axis = new Axis();
+                            axis.setValues(axisValues);
+                            axis.setTextSize(6);
+//                        axis.getMaxLabelChars();
+                            axis.setName("Suhu");
+                            axis.setTextColor(Color.parseColor("#03A9F4"));
+                            data.setAxisXBottom(axis);
+                            Axis yAxis = new Axis();
+                            yAxis.setTextColor(Color.parseColor("#03A9F4"));
+                            yAxis.setTextSize(16);
+                            data.setAxisYLeft(yAxis);
+                            lineChartView = findViewById(R.id.chartAirPakan);
+                            lineChartView.setLineChartData(data);
+                            Viewport viewport = new Viewport(lineChartView.getMaximumViewport());
+                            viewport.top = 200;
+                            lineChartView.setMaximumViewport(viewport);
+                            lineChartView.setCurrentViewport(viewport);
                         }
                     }
-                    try {
-                        drawLineChart(getDataDaySet());
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
                 }
+                lineChart2();
             }
-
             @Override
             public void onFailure(retrofit2.Call<DataSensorRespon> call, Throwable t) {
                 Log.e("debug", "onFailure: ERROR > " + t.toString());
@@ -105,119 +145,60 @@ public class AirPakanActivity extends AppCompatActivity implements AdapterView.O
         });
     }
 
-    private void drawLineChart(List<Entry> lineEntries) throws ParseException {
-        LineChart lineChart = findViewById(R.id.chartSuhu);
 
-        LineDataSet lineDataSet = new LineDataSet(lineEntries, "Air");
-        lineDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
-        lineDataSet.setHighlightEnabled(true);
-        lineDataSet.setLineWidth(2);
-        lineDataSet.setColor(Color.RED);
-        lineDataSet.setCircleColor(Color.YELLOW);
-        lineDataSet.setCircleRadius(6);
-        lineDataSet.setCircleHoleRadius(3);
-        lineDataSet.setDrawHighlightIndicators(true);
-        lineDataSet.setHighLightColor(Color.RED);
-        lineDataSet.setValueTextSize(12);
-        lineDataSet.setValueTextColor(Color.DKGRAY);
-
-        LineData lineData = new LineData(lineDataSet);
-        lineChart.getDescription().setText("Air");
-        lineChart.getDescription().setTextSize(12);
-        lineChart.setDrawMarkers(true);
-        lineChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTH_SIDED);
-        lineChart.animateY(1000);
-        lineChart.getXAxis().setGranularityEnabled(true);
-        lineChart.getXAxis().setGranularity(1.0f);
-        lineChart.getXAxis().setLabelCount(lineDataSet.getEntryCount());
-
-        lineChart.setData(lineData);
+    public void lineChart2() {
+        Line line = new Line(yAxisValues2).setColor(Color.parseColor("#9C27B0"));
+        List<Line> lines = new ArrayList();
+        lines.add(line);
+        LineChartData data = new LineChartData();
+        data.setLines(lines);
+        Axis axis = new Axis();
+        axis.setValues(axisValues2);
+        axis.setTextSize(6);
+//                        axis.getMaxLabelChars();
+//        axis.setName("Kelmebapan");
+        axis.setTextColor(Color.parseColor("#03A9F4"));
+        data.setAxisXBottom(axis);
+        Axis yAxis = new Axis();
+        yAxis.setTextColor(Color.parseColor("#03A9F4"));
+        yAxis.setTextSize(16);
+        data.setAxisYLeft(yAxis);
+        lineChartView2 = findViewById(R.id.chartAirPakan2);
+        lineChartView2.setLineChartData(data);
+        Viewport viewport = new Viewport(lineChartView2.getMaximumViewport());
+        viewport.top = 100;
+        lineChartView2.setMaximumViewport(viewport);
+        lineChartView2.setCurrentViewport(viewport);
     }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View v, int position, long id) {
-
         switch (position) {
             case 0:
                 // Whatever you want to happen when the first item gets selected
-                System.out.println("hari");
-                try {
-                    drawLineChart(getDataDaySet());
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
+                start = 5;
                 break;
             case 1:
                 // Whatever you want to happen when the second item gets selected
-                try {
-                    drawLineChart(getDataWeekSet());
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
+                start = 10;
                 break;
             case 2:
                 // Whatever you want to happen when the thrid item gets selected
-                try {
-                    drawLineChart(getDataMonthSet());
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
+                start = 15;
                 break;
             case 3:
                 // Whatever you want to happen when the thrid item gets selected
+                start = 20;
                 break;
-
         }
     }
-
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
         // TODO Auto-generated method stub
     }
-
-
-    private List<Entry> getDataDaySet() throws ParseException {
-        List<Entry> lineEntries = new ArrayList<Entry>();
-        long size = temperature_data_entry.size();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        for (int i = 0; i < size; i++) {
-            // logic disini
-            Date date = simpleDateFormat.parse(temperature_dates_entry.get(i));
-            int day = date.getDate();
-            float dayFloat = (float) day;
-            Entry entry = new Entry(dayFloat, Float.parseFloat(temperature_data_entry.get(i)));
-            lineEntries.add(entry);
-        }
-        return lineEntries;
+    @Override
+    protected void onResume() {
+        super.onResume();
+        lineChart();
     }
-
-    private List<Entry> getDataWeekSet() throws ParseException {
-        List<Entry> lineEntries = new ArrayList<Entry>();
-        long size = temperature_data_entry.size();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        for (int i = 0; i < size; i++) {
-            Date date = simpleDateFormat.parse(temperature_dates_entry.get(i));
-            int week = date.getDay();
-            float weekFloat = (float) week;
-            Entry entry = new Entry(weekFloat, Float.parseFloat(temperature_data_entry.get(i)));
-            lineEntries.add(entry);
-        }
-        return lineEntries;
-    }
-
-    private List<Entry> getDataMonthSet() throws ParseException {
-        List<Entry> lineEntries = new ArrayList<Entry>();
-        long size = temperature_data_entry.size();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        for (int i = 0; i < size; i++) {
-            Date date = simpleDateFormat.parse(temperature_dates_entry.get(i));
-            int month = date.getMonth();
-            float monthFloat = (float) month;
-            Entry entry = new Entry(monthFloat, Float.parseFloat(temperature_data_entry.get(i)));
-            lineEntries.add(entry);
-        }
-        return lineEntries;
-    }
-
-
 }
