@@ -33,11 +33,12 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class SuhuLembapActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class SuhuLembapActivity extends AppCompatActivity  {
+    // implements AdapterView.OnItemSelectedListener
     LineChartView lineChartView;
     LineChartView lineChartView2;
     Context mContex;
-    Spinner dropdown;
+//    Spinner dropdown;
     private static final String[] paths = {"5 Data", "10 Data", "15 Data", "20 Data"};
     int start;
     ProgressDialog loading;
@@ -60,19 +61,18 @@ public class SuhuLembapActivity extends AppCompatActivity implements AdapterView
         swipeRefreshLayout = findViewById(R.id.swipeRefreshSuhuLembap);
         swipeRefreshLayout.setEnabled(true);
         loading = ProgressDialog.show(mContex, null, "Harap Tunggu...", true, false);
-        dropdown = findViewById(R.id.spinnerPeriodeSuhuLembap);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(SuhuLembapActivity.this,
-                android.R.layout.simple_spinner_item, paths);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        dropdown.setAdapter(adapter);
-        dropdown.setOnItemSelectedListener(this);
+//        dropdown = findViewById(R.id.spinnerPeriodeSuhuLembap);
+//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(SuhuLembapActivity.this,
+//                android.R.layout.simple_spinner_item, paths);
+//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        dropdown.setAdapter(adapter);
+//        dropdown.setOnItemSelectedListener(this);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 setData();
             }
         });
-
     }
 
     @Override
@@ -110,6 +110,7 @@ public class SuhuLembapActivity extends AppCompatActivity implements AdapterView
                                     temperature_dates_entry2.add(new AxisValue(i).setLabel(dataSensor.getTanggal()));
                                 }
                             }
+                            start = 7;
                             axisValues = sumbuX.subList(sumbuX.size() - start, sumbuX.size());
                             yAxisValues = sumbuY.subList(sumbuY.size() - start, sumbuY.size());
                             axisValues2 = temperature_dates_entry2.subList(temperature_dates_entry2.size() - start, temperature_dates_entry2.size());
@@ -150,7 +151,9 @@ public class SuhuLembapActivity extends AppCompatActivity implements AdapterView
             @Override
             public void onFailure(retrofit2.Call<DataSensorRespon> call, Throwable t) {
                 Log.e("debug", "onFailure: ERROR > " + t.toString());
-                Toast.makeText(mContex, "Something wrong. Please try again later.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContex, "Tidak ada data. Cek koneksi anda.", Toast.LENGTH_SHORT).show();
+                loading.dismiss();
+//                swipeRefreshLayout.setRefreshing(false);
             }
         });
     }
@@ -172,30 +175,30 @@ public class SuhuLembapActivity extends AppCompatActivity implements AdapterView
         lineChartView2 = findViewById(R.id.chartLembap);
         lineChartView2.setLineChartData(data);
         Viewport viewport = new Viewport(lineChartView2.getMaximumViewport());
-        viewport.top = 100;
+        viewport.top = 200;
         lineChartView2.setMaximumViewport(viewport);
         lineChartView2.setCurrentViewport(viewport);
     }
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View v, int position, long id) {
-        switch (position) {
-            case 0:
-                start = 5;
-                break;
-            case 1:
-                start = 10;
-                break;
-            case 2:
-                start = 15;
-                break;
-            case 3:
-                start = 20;
-                break;
-        }
-    }
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-        // TODO Auto-generated method stub
-    }
+//    @Override
+//    public void onItemSelected(AdapterView<?> parent, View v, int position, long id) {
+//        switch (position) {
+//            case 0:
+//                start = 5;
+//                break;
+//            case 1:
+//                start = 10;
+//                break;
+//            case 2:
+//                start = 15;
+//                break;
+//            case 3:
+//                start = 20;
+//                break;
+//        }
+//    }
+//    @Override
+//    public void onNothingSelected(AdapterView<?> parent) {
+//        // TODO Auto-generated method stub
+//    }
 
 }

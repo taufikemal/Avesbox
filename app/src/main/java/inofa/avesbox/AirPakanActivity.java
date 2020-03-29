@@ -43,8 +43,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AirPakanActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
-
+public class AirPakanActivity extends AppCompatActivity {
+// implements AdapterView.OnItemSelectedListener
     LineChartView lineChartView;
     LineChartView lineChartView2;
     Context mContex;
@@ -58,7 +58,7 @@ public class AirPakanActivity extends AppCompatActivity implements AdapterView.O
     List<AxisValue> temperature_dates_entry2 = new ArrayList<>();
     List<AxisValue> axisValues2 = new ArrayList<>();
     List<PointValue> yAxisValues2 = new ArrayList<>();
-    Spinner dropdown;
+//    Spinner dropdown;
     private static final String[] paths = {"5 Data", "10 Data", "15 Data", "20 Data"};
     int start;
     ProgressDialog loading;
@@ -67,13 +67,14 @@ public class AirPakanActivity extends AppCompatActivity implements AdapterView.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_air_pakan);
-//        loading = ProgressDialog.show(mContex, null, "Harap Tunggu...", true, false);
-        dropdown = findViewById(R.id.spinnerPeriode);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(AirPakanActivity.this,
-                android.R.layout.simple_spinner_item, paths);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        dropdown.setAdapter(adapter);
-        dropdown.setOnItemSelectedListener(this);
+        mContex = this;
+        loading = ProgressDialog.show(mContex, null, "Harap Tunggu...", true, false);
+//        dropdown = findViewById(R.id.spinnerPeriode);
+//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(AirPakanActivity.this,
+//                android.R.layout.simple_spinner_item, paths);
+//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        dropdown.setAdapter(adapter);
+//        dropdown.setOnItemSelectedListener(this);
         lineChart();
     }
     public void lineChart() {
@@ -104,8 +105,7 @@ public class AirPakanActivity extends AppCompatActivity implements AdapterView.O
                                     temperature_dates_entry2.add(new AxisValue(i).setLabel(dataSensor.getTanggal()));
                                 }
                             }
-
-
+                            start = 7;
                             axisValues = temperature_dates_entry.subList(temperature_dates_entry.size() - start, temperature_dates_entry.size());
                             yAxisValues = temperature_data_entry.subList(temperature_data_entry.size() - start, temperature_data_entry.size());
                             axisValues2 = temperature_dates_entry2.subList(temperature_dates_entry2.size() - start, temperature_dates_entry2.size());
@@ -136,11 +136,13 @@ public class AirPakanActivity extends AppCompatActivity implements AdapterView.O
                     }
                 }
                 lineChart2();
+                loading.dismiss();
             }
             @Override
             public void onFailure(retrofit2.Call<DataSensorRespon> call, Throwable t) {
                 Log.e("debug", "onFailure: ERROR > " + t.toString());
-                Toast.makeText(mContex, "Something wrong. Please try again later.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContex, "Tidak ada data. Cek koneksi anda.", Toast.LENGTH_SHORT).show();
+                loading.dismiss();
             }
         });
     }
@@ -155,8 +157,6 @@ public class AirPakanActivity extends AppCompatActivity implements AdapterView.O
         Axis axis = new Axis();
         axis.setValues(axisValues2);
         axis.setTextSize(6);
-//                        axis.getMaxLabelChars();
-//        axis.setName("Kelmebapan");
         axis.setTextColor(Color.parseColor("#03A9F4"));
         data.setAxisXBottom(axis);
         Axis yAxis = new Axis();
@@ -171,31 +171,31 @@ public class AirPakanActivity extends AppCompatActivity implements AdapterView.O
         lineChartView2.setCurrentViewport(viewport);
     }
 
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View v, int position, long id) {
-        switch (position) {
-            case 0:
-                // Whatever you want to happen when the first item gets selected
-                start = 5;
-                break;
-            case 1:
-                // Whatever you want to happen when the second item gets selected
-                start = 10;
-                break;
-            case 2:
-                // Whatever you want to happen when the thrid item gets selected
-                start = 15;
-                break;
-            case 3:
-                // Whatever you want to happen when the thrid item gets selected
-                start = 20;
-                break;
-        }
-    }
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-        // TODO Auto-generated method stub
-    }
+//    @Override
+//    public void onItemSelected(AdapterView<?> parent, View v, int position, long id) {
+//        switch (position) {
+//            case 0:
+//                // Whatever you want to happen when the first item gets selected
+//                start = 5;
+//                break;
+//            case 1:
+//                // Whatever you want to happen when the second item gets selected
+//                start = 10;
+//                break;
+//            case 2:
+//                // Whatever you want to happen when the thrid item gets selected
+//                start = 15;
+//                break;
+//            case 3:
+//                // Whatever you want to happen when the thrid item gets selected
+//                start = 20;
+//                break;
+//        }
+//    }
+//    @Override
+//    public void onNothingSelected(AdapterView<?> parent) {
+//        // TODO Auto-generated method stub
+//    }
     @Override
     protected void onResume() {
         super.onResume();
