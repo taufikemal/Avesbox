@@ -10,8 +10,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginVertical="20dp"
         android:gravity="center_horizontal"
         android:orientation="vertical"
         android:padding="10dp"
@@ -31,60 +29,64 @@
                 android:layout_height="wrap_content"
                 android:text="Nama Pengguna :"
                 android:layout_marginTop="10dp"
-                android:textSize="15dp"/>
+                android:textSize="17dp"/>
             <EditText
                 android:id="@+id/localETNama"
-                android:layout_width="155dp"
-                android:padding="10dp"
-                android:layout_height="30dp"
+                android:layout_width="match_parent"
+                android:padding="6dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:layout_marginLeft="140dp"
                 android:hint="nama pengguna"
-                android:textSize="10dp"
+                android:textSize="17dp"
                 android:background="@drawable/edittext_rounded"/>
             <TextView
                 android:layout_below="@id/localETNama"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Username :"
-                android:textSize="15dp"
+                android:textSize="17dp"
                 android:layout_marginTop="20dp"/>
             <EditText
                 android:id="@+id/localETUsername"
                 android:layout_below="@id/localETNama"
-                android:layout_width="155dp"
-                android:padding="10dp"
-                android:layout_height="30dp"
+                android:layout_width="match_parent"
+                android:padding="5dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:layout_marginLeft="140dp"
                 android:hint="username"
-                android:textSize="10dp"
+                android:textSize="17dp"
                 android:background="@drawable/edittext_rounded"/>
             <TextView
                 android:layout_below="@id/localETUsername"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Alamat :"
-                android:textSize="15dp"
+                android:textSize="17dp"
                 android:layout_marginTop="20dp"/>
             <EditText
                 android:id="@+id/localETAlamat"
                 android:layout_below="@id/localETUsername"
-                android:layout_width="155dp"
-                android:padding="10dp"
-                android:layout_height="30dp"
+                android:layout_width="match_parent"
+                android:padding="5dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:layout_marginLeft="140dp"
                 android:hint="alamat"
-                android:textSize="10dp"
-                android:background="@drawable/edittext_rounded"/>
+                android:textSize="17dp"
+                android:background="@drawable/edittext_rounded"
+                android:lines="4"
+                android:gravity="top|start"
+                android:inputType="textMultiLine"
+                android:scrollHorizontally="false"/>
 
             <Button
                 android:id="@+id/ButtonSimpanDataProfil"
                 android:layout_below="@id/localETAlamat"
                 android:layout_width="250dp"
                 android:layout_height="30dp"
-                android:background="@color/design_default_color_primary_dark"
+                android:background="@drawable/button_rounded"
                 android:text="Simpan Perubahan"
                 android:textColor="@color/Putih"
                 android:layout_marginTop="20dp"

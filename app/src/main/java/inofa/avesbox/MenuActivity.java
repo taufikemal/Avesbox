@@ -67,7 +67,7 @@ public class MenuActivity extends AppCompatActivity
 
     // newslist
     String API_KEY = "9c8df7817a1a41de8d10732a3d57e887";
-    String NEWS_SOURCE = "cnn";
+    String NEWS_SOURCE = "id";
     ListView listNews;
     ProgressBar loader;
 
@@ -207,6 +207,14 @@ public class MenuActivity extends AppCompatActivity
                startActivity(intent);
            }
        });
+
+        LinearLayout MenuSmartAmbience = findViewById(R.id.smartAmbience);
+        MenuSmartAmbience.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(mContext, "Dalam Pengembangan", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 
@@ -222,6 +230,7 @@ public class MenuActivity extends AppCompatActivity
         final TextView TvSuhu = findViewById(R.id.TVSuhu);
         final TextView TvPakan = findViewById(R.id.TVPakan);
         final TextView TvAir = findViewById(R.id.TVAir);
+        final TextView TVLembap = findViewById(R.id.tvLembap);
 
         call.enqueue(new Callback<DataSensorRespon>() {
             @Override
@@ -244,19 +253,22 @@ public class MenuActivity extends AppCompatActivity
                                     float pakan = filterDataSuhu.get(filterDataSuhu.size() - 1).getNilai();
                                     DecimalFormat decimalFormat = new DecimalFormat("#.##");
                                     TvPakan.setText(String.valueOf(decimalFormat.format(pakan)));
-                                } else if (dataSensor.getKodeSensor() == 6) {
+                                } else if (dataSensor.getKodeSensor() == 1) {
                                     filterDataSuhu.add(dataSensor);
                                     float air = filterDataSuhu.get(filterDataSuhu.size() - 1).getNilai();
                                     DecimalFormat decimalFormat = new DecimalFormat("#.##");
                                     TvAir.setText(String.valueOf(decimalFormat.format(air)));
+                                } else if (dataSensor.getKodeSensor() == 6) {
+                                    filterDataSuhu.add(dataSensor);
+                                    float lembap = filterDataSuhu.get(filterDataSuhu.size() - 1).getNilai();
+                                    DecimalFormat decimalFormat = new DecimalFormat("#.##");
+                                    TVLembap.setText(String.valueOf(decimalFormat.format(lembap)));
                                 }
                             }
                         }
-
                     }
                 }
             }
-
             @Override
             public void onFailure(retrofit2.Call<DataSensorRespon> call, Throwable t) {
                 Log.e("debug", "onFailure: ERROR > " + t.toString());
@@ -276,21 +288,22 @@ public class MenuActivity extends AppCompatActivity
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu, menu);
-        return true;
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        getMenuInflater().inflate(R.menu.menu, menu);
+//        return false;
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        int id = item.getItemId();
+//
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -328,8 +341,12 @@ public class MenuActivity extends AppCompatActivity
         super.onResume();
         suhu();
         sidebar();
+    }
 
-
+    @Override
+    protected  void onPause(){
+        super.onPause();
+        suhu();
     }
 
     public void sidebar() {
@@ -350,7 +367,7 @@ public class MenuActivity extends AppCompatActivity
         protected String doInBackground(String... args) {
             String xml = "";
             String urlParameters = "";
-            xml = Function.excuteGet("https://newsapi.org/v1/articles?source=" + NEWS_SOURCE + "&sortBy=top&apiKey=" + API_KEY, urlParameters);
+            xml = Function.excuteGet("http://newsapi.org/v2/top-headlines?country=" + NEWS_SOURCE + "&apiKey=" + API_KEY, urlParameters);
             return xml;
         }
 

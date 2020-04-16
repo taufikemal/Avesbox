@@ -6,13 +6,30 @@
     android:background="@color/WarnaDasar">
 
     <TextView
+        android:id="@+id/titleKodesensor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
-        android:text="Kode Sensor"
+        android:text="ID Sensor"
         android:textSize="17dp" />
     <TextView
-        android:id="@+id/idTVSensor1"
+        android:id="@+id/titleIdDevice"
+        android:layout_below="@id/titleKodesensor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:text="ID Device"
+        android:textSize="17dp" />
+
+    <TextView
+        android:layout_below="@id/titleIdDevice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:text="ID Kandang"
+        android:textSize="17dp" />
+    <TextView
+        android:id="@+id/TVidSensor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="115dp"
@@ -20,8 +37,33 @@
         android:textSize="17dp" />
 
     <TextView
-        android:id="@+id/jenisTVSensor1"
-        android:layout_below="@id/updateTVsensor1"
+        android:id="@+id/TVidDevice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/titleKodesensor"
+        android:layout_marginLeft="115dp"
+        android:text="1"
+        android:textSize="17dp" />
+    <TextView
+        android:layout_below="@id/titleIdDevice"
+        android:id="@+id/TVidKandang"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="115dp"
+        android:text="1"
+        android:textSize="17dp" />
+
+    <TextView
+        android:id="@+id/namaTVsensor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="150dp"
+        android:text="Nama Sensor"
+        android:textSize="16dp" />
+
+    <TextView
+        android:id="@+id/keteranganTVSensor"
+        android:layout_below="@id/namaTVsensor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="150dp"
@@ -29,12 +71,14 @@
         android:textSize="16dp" />
 
     <TextView
-        android:id="@+id/updateTVsensor1"
+        android:layout_below="@+id/keteranganTVSensor"
+        android:id="@+id/alamatTVSensor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="150dp"
-        android:text="Update terakhir"
+        android:text="Alamat"
         android:textSize="16dp" />
+
 
 
 </RelativeLayout>

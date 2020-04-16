@@ -99,22 +99,7 @@ public class KandangActivity extends AppCompatActivity {
                                 } else {
                                     Toast.makeText(KandangActivity.this, "Data tidak ada", Toast.LENGTH_LONG).show();
                                 }
-//                                if (listSensor.getKodeSensor() == 4) {
-//                                    dataAakhir4.add(listSensor);
-//                                    DataSensor list4 = dataAakhir4.get(dataAakhir4.size()-1);
-//                                    sensorList.add(list4);
-//                                }
-//                                else if (listSensor.getKodeSensor() == 5) {
-//                                    dataAakhir5.add(listSensor);
-//                                    DataSensor list5 = dataAakhir5.get(dataAakhir5.size()-1);
-//                                    sensorList.add(list5);
-////                                    String vv = dataAakhir5.get(dataAakhir5.size()-1).getTanggal();
-////                                    TextView tv = findViewById(R.id.localTVSensor);
-////                                    tv.setText(vv);
-//                                }
                             }
-//                            sensorList.addAll();
-//                            sensorList.addAll(dataAakhir5);
                         }
                     }
 //                  recyclerView.setVisibility(View.VISIBLE);

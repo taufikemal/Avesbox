@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
 public class DetailNewsActivity extends AppCompatActivity {
@@ -27,7 +28,7 @@ public class DetailNewsActivity extends AppCompatActivity {
         webView.loadUrl(url);
 
 
-        webView.setWebChromeClient(new WebChromeClient() {
+        webView.setWebViewClient(new WebViewClient() {
             public void onProgressChanged(WebView view, int progress) {
                 if (progress == 100) {
                     loader.setVisibility(View.GONE);

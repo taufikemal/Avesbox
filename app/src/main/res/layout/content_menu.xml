@@ -149,10 +149,11 @@
                         android:gravity="center"
                         android:orientation="vertical">
                         <TextView
+                            android:id="@+id/tvLembap"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="50°RH"
+                            android:text="- -"
                             android:textColor="@color/Putih"
                             android:textSize="25dp" />
                         <TextView
@@ -281,6 +282,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/smartAmbience"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"

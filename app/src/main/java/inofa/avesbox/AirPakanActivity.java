@@ -94,18 +94,18 @@ public class AirPakanActivity extends AppCompatActivity {
                         if (arrayDataSensor.size() > 0) {
                             for (int i = 0; i < arrayDataSensor.size(); i++) {
                                 DataSensor dataSensor = arrayDataSensor.get(i);
-                                if (dataSensor.getKodeSensor() == 5) {
+                                if (dataSensor.getKodeSensor() == 1) {
                                     float nilai = (float) dataSensor.getNilai();
                                     temperature_data_entry.add(new PointValue(i, nilai));
                                     temperature_dates_entry.add(new AxisValue(i).setLabel(dataSensor.getTanggal()));
 
-                                } else if (dataSensor.getKodeSensor() == 4) {
+                                } else if (dataSensor.getKodeSensor() == 5) {
                                     float nilai = (float) dataSensor.getNilai();
                                     temperature_data_entry2.add(new PointValue(i, nilai));
                                     temperature_dates_entry2.add(new AxisValue(i).setLabel(dataSensor.getTanggal()));
                                 }
                             }
-                            start = 7;
+                            start = 6;
                             axisValues = temperature_dates_entry.subList(temperature_dates_entry.size() - start, temperature_dates_entry.size());
                             yAxisValues = temperature_data_entry.subList(temperature_data_entry.size() - start, temperature_data_entry.size());
                             axisValues2 = temperature_dates_entry2.subList(temperature_dates_entry2.size() - start, temperature_dates_entry2.size());
@@ -119,7 +119,7 @@ public class AirPakanActivity extends AppCompatActivity {
                             axis.setValues(axisValues);
                             axis.setTextSize(6);
 //                        axis.getMaxLabelChars();
-                            axis.setName("Suhu");
+//                            axis.setName("Suhu");
                             axis.setTextColor(Color.parseColor("#03A9F4"));
                             data.setAxisXBottom(axis);
                             Axis yAxis = new Axis();
@@ -129,10 +129,14 @@ public class AirPakanActivity extends AppCompatActivity {
                             lineChartView = findViewById(R.id.chartAirPakan);
                             lineChartView.setLineChartData(data);
                             Viewport viewport = new Viewport(lineChartView.getMaximumViewport());
-                            viewport.top = 200;
+                            viewport.top = 150;
+                            viewport.bottom = 0;
                             lineChartView.setMaximumViewport(viewport);
                             lineChartView.setCurrentViewport(viewport);
                         }
+                    } else  {
+                        loading.dismiss();
+                        Toast.makeText(mContex, "Tidak ada data. Cek koneksi anda.", Toast.LENGTH_SHORT).show();
                     }
                 }
                 lineChart2();
@@ -166,7 +170,8 @@ public class AirPakanActivity extends AppCompatActivity {
         lineChartView2 = findViewById(R.id.chartAirPakan2);
         lineChartView2.setLineChartData(data);
         Viewport viewport = new Viewport(lineChartView2.getMaximumViewport());
-        viewport.top = 100;
+        viewport.top = 150;
+        viewport.bottom = 0;
         lineChartView2.setMaximumViewport(viewport);
         lineChartView2.setCurrentViewport(viewport);
     }

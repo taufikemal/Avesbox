@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
@@ -11,6 +11,12 @@
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">true</item>
         <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="EditTextHintStyle" parent="EditTextHintStyle" tools:ignore="ResourceCycle">
+        <item name="android:textColor">@color/WarnaOrnamen</item>
+        <item name="android:textSize">15dp</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />

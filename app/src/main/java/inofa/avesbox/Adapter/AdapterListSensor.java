@@ -12,13 +12,14 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import inofa.avesbox.Model.DataListSensor;
 import inofa.avesbox.Model.DataSensor;
 import inofa.avesbox.R;
 
 public class AdapterListSensor extends RecyclerView.Adapter<AdapterListSensor.CustomViewHolder> {
-    List<DataSensor> listSensor;
+    List<DataListSensor> listSensor;
 
-    public AdapterListSensor(List<DataSensor> listSensor) {
+    public AdapterListSensor(List<DataListSensor> listSensor) {
         this.listSensor = listSensor;
     }
 
@@ -33,11 +34,13 @@ public class AdapterListSensor extends RecyclerView.Adapter<AdapterListSensor.Cu
 
     @Override
     public void onBindViewHolder(@NonNull CustomViewHolder holder, int position) {
-        DataSensor listViewSensor = listSensor.get(position);
-        holder.txtID.setText(String.valueOf(listViewSensor.getKodeSensor()));
-        holder.txtUpdate.setText(listViewSensor.getTanggal());
-        holder.txtKeterangan.setText(listViewSensor.getNamaSensor());
-
+        DataListSensor listViewSensor = listSensor.get(position);
+        holder.txtIdSensor.setText(String.valueOf(listViewSensor.getIdSensor()));
+        holder.txtIdDevice.setText(String.valueOf(listViewSensor.getIdDevice()));
+        holder.txtIdKandang.setText(String.valueOf(listViewSensor.getIdKandang()));
+        holder.txtNamaSensor.setText(listViewSensor.getSensor());
+        holder.txtAlamat.setText(listViewSensor.getAlamat());
+        holder.txtKeterangan.setText(listViewSensor.getKeterangan());
     }
 
     @Override
@@ -47,18 +50,21 @@ public class AdapterListSensor extends RecyclerView.Adapter<AdapterListSensor.Cu
 
     public class CustomViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView txtKeterangan, txtUpdate, txtID;
+        private TextView txtKeterangan, txtNamaSensor, txtIdSensor, txtIdDevice, txtIdKandang, txtAlamat ;
 
 
         public CustomViewHolder(View itemView) {
             super(itemView);
-            txtID = itemView.findViewById(R.id.idTVSensor1);
-            txtKeterangan = itemView.findViewById(R.id.jenisTVSensor1);
-            txtUpdate = itemView.findViewById(R.id.updateTVsensor1);
+            txtIdDevice = itemView.findViewById(R.id.TVidDevice);
+            txtKeterangan = itemView.findViewById(R.id.keteranganTVSensor);
+            txtIdKandang = itemView.findViewById(R.id.TVidKandang);
+            txtIdSensor = itemView.findViewById(R.id.TVidSensor);
+            txtAlamat = itemView.findViewById(R.id.alamatTVSensor);
+            txtNamaSensor = itemView.findViewById(R.id.namaTVsensor);
         }
     }
 
-    public void refreshEvents(List<DataSensor> listSensor) {
+    public void refreshEvents(List<DataListSensor> listSensor) {
         this.listSensor.clear();
         this.listSensor.addAll(listSensor);
         notifyDataSetChanged();

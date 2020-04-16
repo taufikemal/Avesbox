@@ -59,7 +59,7 @@ public class LoginActivity extends AppCompatActivity {
 
         if (uname.isEmpty()) {
             loading.dismiss();
-            username.setError("Email is required");
+            username.setError("Username is required");
             username.requestFocus();
             return;
         }
@@ -95,7 +95,6 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 }
             }
-
             @Override
             public void onFailure(Call<LoginRespon> call, Throwable t) {
                 loading.dismiss();

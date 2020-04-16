@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import com.google.gson.Gson;
 
 import inofa.avesbox.Model.DataKandangRespon;
+import inofa.avesbox.Model.DataListSensorRespon;
 import inofa.avesbox.Model.DataSensor;
 import inofa.avesbox.Model.DataSensorRespon;
 import inofa.avesbox.Model.DetailUserRespon;
@@ -45,12 +46,13 @@ public interface ApiInterface {
             @Field("username") String username,
             @Field("alamat") String alamat);
 
-    @GET("record")
-    Call<DataSensorRespon> dataListSensor(
-            @Header("token") String token);
 
     @GET("kandang")
     Call<DataKandangRespon> dataListKandang(
+            @Header("token") String token);
+
+    @GET("sensor")
+    Call<DataListSensorRespon> dataListSensor(
             @Header("token") String token);
 
     @FormUrlEncoded

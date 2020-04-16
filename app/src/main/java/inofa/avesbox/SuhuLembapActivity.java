@@ -42,7 +42,7 @@ public class SuhuLembapActivity extends AppCompatActivity  {
     private static final String[] paths = {"5 Data", "10 Data", "15 Data", "20 Data"};
     int start;
     ProgressDialog loading;
-    SwipeRefreshLayout swipeRefreshLayout;
+//    SwipeRefreshLayout swipeRefreshLayout;
     List<PointValue> yAxisValues = new ArrayList();
     List<AxisValue> axisValues = new ArrayList();
     List<PointValue> sumbuY = new ArrayList<>();
@@ -58,8 +58,8 @@ public class SuhuLembapActivity extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_suhu_lembap);
         mContex = this;
-        swipeRefreshLayout = findViewById(R.id.swipeRefreshSuhuLembap);
-        swipeRefreshLayout.setEnabled(true);
+//        swipeRefreshLayout = findViewById(R.id.swipeRefreshSuhuLembap);
+//        swipeRefreshLayout.setEnabled(true);
         loading = ProgressDialog.show(mContex, null, "Harap Tunggu...", true, false);
 //        dropdown = findViewById(R.id.spinnerPeriodeSuhuLembap);
 //        ArrayAdapter<String> adapter = new ArrayAdapter<String>(SuhuLembapActivity.this,
@@ -67,12 +67,12 @@ public class SuhuLembapActivity extends AppCompatActivity  {
 //        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 //        dropdown.setAdapter(adapter);
 //        dropdown.setOnItemSelectedListener(this);
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                setData();
-            }
-        });
+//        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//            @Override
+//            public void onRefresh() {
+//                setData();
+//            }
+//        });
     }
 
     @Override
@@ -104,13 +104,13 @@ public class SuhuLembapActivity extends AppCompatActivity  {
                                     sumbuX.add(new AxisValue(i).setLabel(dataSensor.getTanggal()));
                                     float data = (float) dataSensor.getNilai();
                                     sumbuY.add(new PointValue(i, data));
-                                } else if (dataSensor.getKodeSensor() == 5) {
+                                } else if (dataSensor.getKodeSensor() == 6) {
                                     float nilai = (float) dataSensor.getNilai();
                                     temperature_data_entry2.add(new PointValue(i, nilai));
                                     temperature_dates_entry2.add(new AxisValue(i).setLabel(dataSensor.getTanggal()));
                                 }
                             }
-                            start = 7;
+                            start = 6;
                             axisValues = sumbuX.subList(sumbuX.size() - start, sumbuX.size());
                             yAxisValues = sumbuY.subList(sumbuY.size() - start, sumbuY.size());
                             axisValues2 = temperature_dates_entry2.subList(temperature_dates_entry2.size() - start, temperature_dates_entry2.size());
@@ -125,7 +125,7 @@ public class SuhuLembapActivity extends AppCompatActivity  {
                             axis.setValues(axisValues);
                             axis.setTextSize(6);
                             axis.getMaxLabelChars();
-                            axis.setName("Suhu");
+//                            axis.setName("Suhu");
                             axis.setTextColor(Color.parseColor("#03A9F4"));
                             data.setAxisXBottom(axis);
 
@@ -136,13 +136,17 @@ public class SuhuLembapActivity extends AppCompatActivity  {
 
                             lineChartView.setLineChartData(data);
                             Viewport viewport = new Viewport(lineChartView.getMaximumViewport());
-                            viewport.top = 40;
+                            viewport.top = 50;
+                            viewport.bottom = 0;
                             lineChartView.setMaximumViewport(viewport);
                             lineChartView.setCurrentViewport(viewport);
                         }
                         chart2();
                         loading.dismiss();
-                        swipeRefreshLayout.setRefreshing(false);
+//                        swipeRefreshLayout.setRefreshing(false);
+                    } else  {
+                        loading.dismiss();
+                        Toast.makeText(mContex, "Tidak ada data. Cek koneksi anda.", Toast.LENGTH_SHORT).show();
                     }
                 }
 
@@ -150,9 +154,9 @@ public class SuhuLembapActivity extends AppCompatActivity  {
 
             @Override
             public void onFailure(retrofit2.Call<DataSensorRespon> call, Throwable t) {
+                loading.dismiss();
                 Log.e("debug", "onFailure: ERROR > " + t.toString());
                 Toast.makeText(mContex, "Tidak ada data. Cek koneksi anda.", Toast.LENGTH_SHORT).show();
-                loading.dismiss();
 //                swipeRefreshLayout.setRefreshing(false);
             }
         });
@@ -175,7 +179,8 @@ public class SuhuLembapActivity extends AppCompatActivity  {
         lineChartView2 = findViewById(R.id.chartLembap);
         lineChartView2.setLineChartData(data);
         Viewport viewport = new Viewport(lineChartView2.getMaximumViewport());
-        viewport.top = 200;
+        viewport.top = 50;
+        viewport.bottom = 0;
         lineChartView2.setMaximumViewport(viewport);
         lineChartView2.setCurrentViewport(viewport);
     }
