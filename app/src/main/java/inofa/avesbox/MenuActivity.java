@@ -1,15 +1,24 @@
 package inofa.avesbox;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.Image;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Settings;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.View;
@@ -21,6 +30,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.WindowManager;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -64,6 +74,7 @@ public class MenuActivity extends AppCompatActivity
     ProgressDialog loading;
     SwipeRefreshLayout swipeRefreshLayout;
     Runnable refresh;
+    float lembap,air,pakan,suhu;
 
     // newslist
     String API_KEY = "9c8df7817a1a41de8d10732a3d57e887";
@@ -82,20 +93,21 @@ public class MenuActivity extends AppCompatActivity
     NavigationView navigationView;
     TextView tvNama;
 
+    @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         mContext = this;
+//        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
         loading = ProgressDialog.show(mContext, null, "Harap Tunggu...", true, false);
 
         // news
-
         listNews = (ListView) findViewById(R.id.listNews);
-        loader = (ProgressBar) findViewById(R.id.loader);
+        loader = (ProgressBar) findViewById(R.id.loader1);
         listNews.setEmptyView(loader);
 
 
@@ -215,6 +227,15 @@ public class MenuActivity extends AppCompatActivity
                 Toast.makeText(mContext, "Dalam Pengembangan", Toast.LENGTH_SHORT).show();
             }
         });
+
+        TextView FullBerita = findViewById(R.id.textViewBacaSemua);
+        FullBerita.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MenuActivity.this, ListNewsActivity.class);
+                startActivity(i);
+            }
+        });
     }
 
 
@@ -245,22 +266,22 @@ public class MenuActivity extends AppCompatActivity
                                 DataSensor dataSensor = arrayDataSensor.get(i);
                                 if (dataSensor.getKodeSensor() == 4) {
                                     filterDataSuhu.add(dataSensor);
-                                    float suhu = filterDataSuhu.get(filterDataSuhu.size() - 1).getNilai();
+                                    suhu = filterDataSuhu.get(filterDataSuhu.size() - 1).getNilai();
                                     DecimalFormat decimalFormat = new DecimalFormat("#.##");
                                     TvSuhu.setText(String.valueOf(decimalFormat.format(suhu)));
                                 } else if (dataSensor.getKodeSensor() == 5) {
                                     filterDataSuhu.add(dataSensor);
-                                    float pakan = filterDataSuhu.get(filterDataSuhu.size() - 1).getNilai();
+                                    pakan = filterDataSuhu.get(filterDataSuhu.size() - 1).getNilai();
                                     DecimalFormat decimalFormat = new DecimalFormat("#.##");
                                     TvPakan.setText(String.valueOf(decimalFormat.format(pakan)));
                                 } else if (dataSensor.getKodeSensor() == 1) {
                                     filterDataSuhu.add(dataSensor);
-                                    float air = filterDataSuhu.get(filterDataSuhu.size() - 1).getNilai();
+                                    air = filterDataSuhu.get(filterDataSuhu.size() - 1).getNilai();
                                     DecimalFormat decimalFormat = new DecimalFormat("#.##");
                                     TvAir.setText(String.valueOf(decimalFormat.format(air)));
                                 } else if (dataSensor.getKodeSensor() == 6) {
                                     filterDataSuhu.add(dataSensor);
-                                    float lembap = filterDataSuhu.get(filterDataSuhu.size() - 1).getNilai();
+                                    lembap = filterDataSuhu.get(filterDataSuhu.size() - 1).getNilai();
                                     DecimalFormat decimalFormat = new DecimalFormat("#.##");
                                     TVLembap.setText(String.valueOf(decimalFormat.format(lembap)));
                                 }
@@ -276,6 +297,102 @@ public class MenuActivity extends AppCompatActivity
             }
         });
         loading.dismiss();
+
+
+        // notifikasi
+        int SUMMARY_ID = 0;
+        String GROUP_KEY_WORK_EMAIL = "com.android.example.";
+        if (0 < suhu && (29 >= suhu || suhu >= 32 )) {
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(
+                    MenuActivity.this
+            )
+                    .setSmallIcon(R.mipmap.ic_launcher)
+                    .setContentTitle("Notifikasi Suhu")
+                    .setContentText("Perhatian, suhu kandang tidak ideal")
+                    .setSound(Settings.System.DEFAULT_NOTIFICATION_URI)
+                    .setVibrate(new long[]{1000,1000})
+                    .setGroup(GROUP_KEY_WORK_EMAIL)
+                    .setAutoCancel(true);
+            Intent intent = new Intent(MenuActivity.this, SuhuLembapActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+            PendingIntent pendingIntent = PendingIntent.getActivity(MenuActivity.this,0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+            builder.setContentIntent(pendingIntent);
+
+            NotificationManager notificationManager = (NotificationManager)getSystemService(
+                    Context.NOTIFICATION_SERVICE
+            );
+            notificationManager.notify(1,builder.build());
+        }
+        if (0 < lembap && (lembap >= 28 || lembap <= 25)){
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(
+                    MenuActivity.this
+            )
+                    .setSmallIcon(R.mipmap.ic_launcher)
+                    .setContentTitle("Notifikasi Kelembapan")
+                    .setContentText("Perhatian, kelembapan kandang tidak ideal")
+                    .setSound(Settings.System.DEFAULT_NOTIFICATION_URI)
+                    .setVibrate(new long[]{1000,1000})
+                    .setGroup(GROUP_KEY_WORK_EMAIL)
+                    .setAutoCancel(true);
+            Intent intent = new Intent(MenuActivity.this, SuhuLembapActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+            PendingIntent pendingIntent = PendingIntent.getActivity(MenuActivity.this,0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+            builder.setContentIntent(pendingIntent);
+
+            NotificationManager notificationManager = (NotificationManager)getSystemService(
+                    Context.NOTIFICATION_SERVICE
+            );
+            notificationManager.notify(2,builder.build());
+        }
+        if (0 < pakan && pakan >= 80){
+
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(
+                    MenuActivity.this
+            )
+                    .setSmallIcon(R.mipmap.ic_launcher)
+                    .setContentTitle("Notifikasi Pakan")
+                    .setContentText("Perhatian, pakan ternak hampir habis")
+//                    .setSound(Settings.System.DEFAULT_NOTIFICATION_URI)
+                    .setVibrate(new long[]{1000,1000})
+                    .setGroup(GROUP_KEY_WORK_EMAIL)
+                    .setAutoCancel(true);
+            Intent intent = new Intent(MenuActivity.this, AirPakanActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+            PendingIntent pendingIntent = PendingIntent.getActivity(MenuActivity.this,0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+            builder.setContentIntent(pendingIntent);
+
+            NotificationManager notificationManager = (NotificationManager)getSystemService(
+                    Context.NOTIFICATION_SERVICE
+            );
+            notificationManager.notify(3,builder.build());
+
+        }
+        if (0 < air && air >= 110 ){
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(
+                    MenuActivity.this
+            )
+                    .setSmallIcon(R.mipmap.ic_launcher)
+                    .setContentTitle("Notifikasi Air")
+                    .setContentText("Perhatian, minum ternak hampir habis")
+                    .setSound(Settings.System.DEFAULT_NOTIFICATION_URI)
+                    .setVibrate(new long[]{1000,1000})
+                    .setGroup(GROUP_KEY_WORK_EMAIL)
+                    .setAutoCancel(true);
+            Intent intent = new Intent(MenuActivity.this, AirPakanActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+            PendingIntent pendingIntent = PendingIntent.getActivity(MenuActivity.this,0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+            builder.setContentIntent(pendingIntent);
+
+            NotificationManager notificationManager = (NotificationManager)getSystemService(
+                    Context.NOTIFICATION_SERVICE
+            );
+            notificationManager.notify(4,builder.build());
+        }
+
     }
 
     @Override
@@ -288,22 +405,6 @@ public class MenuActivity extends AppCompatActivity
         }
     }
 
-
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.menu, menu);
-//        return false;
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        int id = item.getItemId();
-//
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -358,6 +459,7 @@ public class MenuActivity extends AppCompatActivity
         tvNama.setText(nama);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
     public class DownloadNews extends AsyncTask<String, Void, String> {
         @Override
         protected void onPreExecute() {
@@ -408,7 +510,6 @@ public class MenuActivity extends AppCompatActivity
                 Toast.makeText(getApplicationContext(), "No news found", Toast.LENGTH_SHORT).show();
             }
         }
-
 
     }
 
