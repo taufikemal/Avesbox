@@ -53,6 +53,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import inofa.avesbox.Adapter.ListNewsAdapter;
 import inofa.avesbox.Model.DataSensor;
@@ -117,6 +119,12 @@ public class MenuActivity extends AppCompatActivity
         } else {
             Toast.makeText(getApplicationContext(), "No Internet Connection", Toast.LENGTH_LONG).show();
         }
+
+        // notifikasi per 5 menit
+        MyTimerTask myTask = new MyTimerTask();
+        Timer myTimer = new Timer();
+
+        myTimer.schedule(myTask,50000, 100000);
 
         //Salam Sapaan//
         TVGreeting = findViewById(R.id.TVgreeting);
@@ -236,6 +244,15 @@ public class MenuActivity extends AppCompatActivity
                 startActivity(i);
             }
         });
+
+    }
+
+    // settingan interval 5 menit notifikasi
+    class MyTimerTask extends TimerTask{
+        @Override
+        public void run() {
+            notifikasi(getApplicationContext(), "Hello");
+        }
     }
 
 
@@ -298,7 +315,9 @@ public class MenuActivity extends AppCompatActivity
         });
         loading.dismiss();
 
+    }
 
+    private void notifikasi( Context context, String message){
         // notifikasi
         int SUMMARY_ID = 0;
         String GROUP_KEY_WORK_EMAIL = "com.android.example.";
@@ -392,7 +411,6 @@ public class MenuActivity extends AppCompatActivity
             );
             notificationManager.notify(4,builder.build());
         }
-
     }
 
     @Override
