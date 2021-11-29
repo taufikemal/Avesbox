@@ -109,7 +109,7 @@ public class MenuActivity extends AppCompatActivity
 
         // news
         listNews = (ListView) findViewById(R.id.listNews);
-        loader = (ProgressBar) findViewById(R.id.loader1);
+        loader = (ProgressBar) findViewById(R.id.loader);
         listNews.setEmptyView(loader);
 
 
@@ -161,7 +161,7 @@ public class MenuActivity extends AppCompatActivity
         View hView = navigationView.inflateHeaderView(R.layout.navigation_header_menu);
         ImageView fotprof = (ImageView) hView.findViewById(R.id.myPict);
         tvNama = (TextView) hView.findViewById(R.id.tvNama);
-        fotprof.setImageResource(R.mipmap.iconprofil);
+//        fotprof.setImageResource(R.mipmap.iconprofil);
 
         //Refresh
         refresh = new Runnable() {
@@ -236,14 +236,14 @@ public class MenuActivity extends AppCompatActivity
             }
         });
 
-        TextView FullBerita = findViewById(R.id.textViewBacaSemua);
-        FullBerita.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(MenuActivity.this, ListNewsActivity.class);
-                startActivity(i);
-            }
-        });
+//        TextView FullBerita = findViewById(R.id.textViewBacaSemua);
+//        FullBerita.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent i = new Intent(MenuActivity.this, ListNewsActivity.class);
+//                startActivity(i);
+//            }
+//        });
 
     }
 

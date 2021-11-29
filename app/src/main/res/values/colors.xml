@@ -13,4 +13,18 @@
     <color name="Putih">#FFFF</color>
     <color name="WarnaLiveChoose">#FCC923</color>
     <color name="BiruSoft">#4179AE</color>
+
+    <array name="array_dot_active">
+        <item>@color/colorAccent</item>
+        <item>@color/colorAccent</item>
+        <item>@color/colorAccent</item>
+        <item>@color/colorAccent</item>
+    </array>
+
+    <array name="array_dot_inactive">
+        <item>@color/colorPrimary</item>
+        <item>@color/colorPrimary</item>
+        <item>@color/colorPrimary</item>
+        <item>@color/colorPrimary</item>
+    </array>
 </resources>
