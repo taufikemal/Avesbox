@@ -13,7 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".OnBoardingActivity"></activity>
+        <activity android:name=".MainActivity" />
         <activity android:name=".UpdatePasswordActivity" />
         <activity android:name=".DetailNewsActivity" />
         <activity android:name=".KandangActivity" />
@@ -29,7 +30,7 @@
         <activity
             android:name=".LoginActivity"
             android:windowSoftInputMode="stateVisible|adjustResize" />
-        <activity android:name=".OnBoardingActivity">
+        <activity android:name=".SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

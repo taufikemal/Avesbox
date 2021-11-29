@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginBottom="10dp"
-            android:src="@mipmap/ic_splash" />
+            android:src="@drawable/ic_splashscreen" />
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="fill_parent"
@@ -37,18 +37,20 @@
                 android:drawableStart="@drawable/email_asset"
                 android:drawableLeft="@drawable/email_asset"
                 android:drawablePadding="15dp"
-                android:textColorHint="@color/WarnaOrnamen"
+                android:drawableTint="@color/colorAccent"
+                android:textColorHint="@color/colorPrimary"
                 android:padding="10dp" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            app:passwordToggleEnabled="true"
             android:hint="Password"
             app:hintAnimationEnabled="true"
             app:hintEnabled="true"
-            app:hintTextAppearance="@style/EditTextHintStyle">
+            app:hintTextAppearance="@style/EditTextHintStyle"
+            app:passwordToggleEnabled="true">
+
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/EtPassword"
                 android:layout_width="fill_parent"
@@ -58,9 +60,11 @@
                 android:drawableStart="@drawable/password_asset"
                 android:drawableLeft="@drawable/password_asset"
                 android:drawablePadding="15dp"
+                android:drawableTint="@color/colorAccent"
                 android:inputType="textPassword"
                 android:padding="10dp" />
         </android.support.design.widget.TextInputLayout>
+
         <Button
             android:id="@+id/button_login"
             android:layout_width="200dp"

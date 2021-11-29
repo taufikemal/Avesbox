@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimary">#0071B5</color>
     <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
-    <color name="WarnaDominan">#DAA700</color>
+    <color name="colorAccent">#AAD0E6</color>
+    <color name="WarnaDominan">#FF9F04</color>
     <color name="WarnaParsial">#06067E</color>
     <color name="WarnaOrnamen">#B18800</color>
     <color name="WarnaSebagian">#886800</color>

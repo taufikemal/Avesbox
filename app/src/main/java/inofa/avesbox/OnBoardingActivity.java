@@ -52,8 +52,8 @@ public class OnBoardingActivity extends AppCompatActivity {
         btnMulai.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                launchHomeScreen();
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+//                launchHomeScreen();
+                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                 startActivity(intent);
             }
         });
@@ -126,7 +126,7 @@ public class OnBoardingActivity extends AppCompatActivity {
 
     private void launchHomeScreen() {
         prefManager.setFirstTimeLaunch();
-        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+        startActivity(new Intent(getApplicationContext(), LoginActivity.class));
         finish();
     }
 
