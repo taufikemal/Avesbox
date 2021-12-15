@@ -13,6 +13,7 @@ import inofa.avesbox.Model.DetailUserRespon;
 import inofa.avesbox.Model.LoginRespon;
 import inofa.avesbox.Model.LoginResponUser;
 import inofa.avesbox.Model.UpdatePassRespon;
+import inofa.avesbox.data.model.LoginResponse;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -29,7 +30,7 @@ public interface ApiInterface {
 
     @FormUrlEncoded
     @POST("auth/login")
-    Call<LoginRespon> loginUser(
+    Call<LoginResponse> loginUser(
             @Field("username") String username,
             @Field("password") String password);
 
