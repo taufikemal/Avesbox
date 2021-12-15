@@ -10,6 +10,7 @@ import java.util.List;
 import inofa.avesbox.Model.DetailUserRespon;
 import inofa.avesbox.Model.LoginRespon;
 import inofa.avesbox.Model.LoginResponUser;
+import inofa.avesbox.data.model.LoginResponse;
 
 public class SharePrefManager {
 
@@ -27,15 +28,19 @@ public class SharePrefManager {
             mInstance = new SharePrefManager(mContext);
         }
         return mInstance;
+
+
+
+
     }
-    public void saveUser(LoginRespon login){
+    public void saveUser(LoginResponse login){
         SharedPreferences sharedPreferences = mContext.getSharedPreferences(SP_AVES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("token", login.getToken());
         Gson gson = new Gson();
-        String serializeData = gson.toJson(login.getDataUser());
-        editor.putString("data", serializeData);
-        editor.putInt("id_users", login.getDataUser().getId_users());
+//        String serializeData = gson.toJson(login.getDataUser());
+//        editor.putString("data", serializeData);
+//        editor.putInt("id_users", login.getDataUser().getId_users());
         editor.apply();
     }
     public void saveUserUpdate(DetailUserRespon detailUserRespon){

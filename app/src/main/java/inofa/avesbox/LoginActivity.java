@@ -20,6 +20,7 @@ import inofa.avesbox.Model.LoginRespon;
 import inofa.avesbox.Rest.ApiClient;
 import inofa.avesbox.Storage.SharePrefManager;
 import inofa.avesbox.Storage.SharePrefManagerUser;
+import inofa.avesbox.data.model.LoginResponse;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -42,6 +43,11 @@ public class LoginActivity extends AppCompatActivity {
         formLogin = findViewById(R.id.formLogin);
         mContext = this;
 
+        if(SharePrefManager.getInstance(LoginActivity.this).isLoggedIn()){
+            Intent intent = new Intent(LoginActivity.this, MenuActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        }
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,21 +76,21 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-        Call<LoginRespon> call = ApiClient
+        Call<LoginResponse> call = ApiClient
                 .getInstance()
                 .getApi()
                 .loginUser(uname, pass);
 
-        call.enqueue(new Callback<LoginRespon>() {
+        call.enqueue(new Callback<LoginResponse>() {
             @Override
-            public void onResponse(Call<LoginRespon> call, Response<LoginRespon> response) {
-                LoginRespon loginResponse = response.body();
+            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+                LoginResponse loginResponse = response.body();
 //                DetailUserRespon detailUserRespon = response.body();
                 loading.dismiss();
                 if (response.isSuccessful()) {
                     if (loginResponse.getCode() == 200) {
                         SharePrefManager.getInstance(LoginActivity.this).saveUser(loginResponse);
-                        SharePrefManagerUser.getInstance(LoginActivity.this).saveUserUpdate(loginResponse.getDataUser());
+//                        SharePrefManagerUser.getInstance(LoginActivity.this).saveUserUpdate(loginResponse.getDataUser());
 //                        SharePrefManager.getInstance(LoginActivity.this).saveUserUpdate(detailUserRespon);
                         Toast.makeText(mContext, "Login successfully", Toast.LENGTH_LONG).show();
                         Intent intent = new Intent(LoginActivity.this, MenuActivity.class);
@@ -96,7 +102,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
             @Override
-            public void onFailure(Call<LoginRespon> call, Throwable t) {
+            public void onFailure(Call<LoginResponse> call, Throwable t) {
                 loading.dismiss();
                 Log.e("debug", "onFailure: ERROR > " + t.toString());
                 Toast.makeText(mContext, "Something wrong. Please try again later.", Toast.LENGTH_SHORT).show();

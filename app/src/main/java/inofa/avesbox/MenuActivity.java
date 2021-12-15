@@ -81,7 +81,7 @@ public class MenuActivity extends AppCompatActivity
     // newslist
     String API_KEY = "9c8df7817a1a41de8d10732a3d57e887";
     String NEWS_SOURCE = "id";
-    ListView listNews;
+//    ListView listNews;
     ProgressBar loader;
 
     ArrayList<HashMap<String, String>> dataList = new ArrayList<HashMap<String, String>>();
@@ -108,17 +108,17 @@ public class MenuActivity extends AppCompatActivity
         loading = ProgressDialog.show(mContext, null, "Harap Tunggu...", true, false);
 
         // news
-        listNews = (ListView) findViewById(R.id.listNews);
+//        listNews = (ListView) findViewById(R.id.listNews);
         loader = (ProgressBar) findViewById(R.id.loader);
-        listNews.setEmptyView(loader);
+//        listNews.setEmptyView(loader);
 
 
-        if (Function.isNetworkAvailable(getApplicationContext())) {
-            DownloadNews newsTask = new DownloadNews();
-            newsTask.execute();
-        } else {
-            Toast.makeText(getApplicationContext(), "No Internet Connection", Toast.LENGTH_LONG).show();
-        }
+//        if (Function.isNetworkAvailable(getApplicationContext())) {
+//            DownloadNews newsTask = new DownloadNews();
+//            newsTask.execute();
+//        } else {
+//            Toast.makeText(getApplicationContext(), "No Internet Connection", Toast.LENGTH_LONG).show();
+//        }
 
         // notifikasi per 5 menit
         MyTimerTask myTask = new MyTimerTask();
@@ -144,7 +144,7 @@ public class MenuActivity extends AppCompatActivity
         } else {
             greeting = "Selamat Pagi";
         }
-        TVGreeting.setText(greeting);
+//        TVGreeting.setText(greeting);
 
         // Drawer
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -174,67 +174,67 @@ public class MenuActivity extends AppCompatActivity
 
 
 //        pull refresh
-        swipeRefreshLayout = findViewById(R.id.pullToRefresh);
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                suhu();
-                swipeRefreshLayout.setRefreshing(false);
-            }
-
-        });
+//        swipeRefreshLayout = findViewById(R.id.pullToRefresh);
+//        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//            @Override
+//            public void onRefresh() {
+//                suhu();
+//                swipeRefreshLayout.setRefreshing(false);
+//            }
+//
+//        });
 
         // listview dan swipeResfresh
-        listNews.setOnScrollListener(new AbsListView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState) {
-
-            }
-
-            @Override
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                if (listNews.getChildAt(0) != null) {
-                    swipeRefreshLayout.setEnabled(listNews.getFirstVisiblePosition() == 0 && listNews.getChildAt(0).getTop() == 0);
-                }
-            }
-        });
+//        listNews.setOnScrollListener(new AbsListView.OnScrollListener() {
+//            @Override
+//            public void onScrollStateChanged(AbsListView view, int scrollState) {
+//
+//            }
+//
+//            @Override
+//            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+//                if (listNews.getChildAt(0) != null) {
+//                    swipeRefreshLayout.setEnabled(listNews.getFirstVisiblePosition() == 0 && listNews.getChildAt(0).getTop() == 0);
+//                }
+//            }
+//        });
 
 
         //Inten Menu
-        LinearLayout MenuAirPakan;
-        MenuAirPakan = findViewById(R.id.ButtonPakanAir);
-        MenuAirPakan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(MenuActivity.this, AirPakanActivity.class);
-                startActivity(i);
-            }
-        });
-        //inten halaman sensor
-        LinearLayout MenuSensorKandang = findViewById(R.id.buttonSensorKandang);
-        MenuSensorKandang.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MenuActivity.this, SensorActivity.class);
-                startActivity(intent);
-            }
-        });
-       LinearLayout MenuSuhuKelembapan = findViewById(R.id.buttonSuhuKelembapan);
-       MenuSuhuKelembapan.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
-               Intent intent = new Intent(MenuActivity.this, SuhuLembapActivity.class);
-               startActivity(intent);
-           }
-       });
-
-        LinearLayout MenuSmartAmbience = findViewById(R.id.smartAmbience);
-        MenuSmartAmbience.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(mContext, "Dalam Pengembangan", Toast.LENGTH_SHORT).show();
-            }
-        });
+//        LinearLayout MenuAirPakan;
+//        MenuAirPakan = findViewById(R.id.ButtonPakanAir);
+//        MenuAirPakan.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent i = new Intent(MenuActivity.this, AirPakanActivity.class);
+//                startActivity(i);
+//            }
+//        });
+//        //inten halaman sensor
+//        LinearLayout MenuSensorKandang = findViewById(R.id.buttonSensorKandang);
+//        MenuSensorKandang.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(MenuActivity.this, SensorActivity.class);
+//                startActivity(intent);
+//            }
+//        });
+//       LinearLayout MenuSuhuKelembapan = findViewById(R.id.buttonSuhuKelembapan);
+//       MenuSuhuKelembapan.setOnClickListener(new View.OnClickListener() {
+//           @Override
+//           public void onClick(View v) {
+//               Intent intent = new Intent(MenuActivity.this, SuhuLembapActivity.class);
+//               startActivity(intent);
+//           }
+//       });
+//
+//        LinearLayout MenuSmartAmbience = findViewById(R.id.smartAmbience);
+//        MenuSmartAmbience.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Toast.makeText(mContext, "Dalam Pengembangan", Toast.LENGTH_SHORT).show();
+//            }
+//        });
 
 //        TextView FullBerita = findViewById(R.id.textViewBacaSemua);
 //        FullBerita.setOnClickListener(new View.OnClickListener() {
@@ -279,8 +279,7 @@ public class MenuActivity extends AppCompatActivity
                         ArrayList<DataSensor> arrayDataSensor = dataSensorRespon.getDataSensors();
                         if (arrayDataSensor.size() > 0) {
                             ArrayList<DataSensor> filterDataSuhu = new ArrayList<>();
-                            for (int i = 0; i < arrayDataSensor.size(); i++) {
-                                DataSensor dataSensor = arrayDataSensor.get(i);
+                            for (int i = 0; i < arrayDataSensor.size(); i++) { DataSensor dataSensor = arrayDataSensor.get(i);
                                 if (dataSensor.getKodeSensor() == 4) {
                                     filterDataSuhu.add(dataSensor);
                                     suhu = filterDataSuhu.get(filterDataSuhu.size() - 1).getNilai();
@@ -474,61 +473,61 @@ public class MenuActivity extends AppCompatActivity
         String data = shfm.getString("data", "");
         LoginResponUser user = gson.fromJson(data, LoginResponUser.class);
         String nama = user.getNama();
-        tvNama.setText(nama);
+        tvNama.setText("Tim Monitoring");
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
-    public class DownloadNews extends AsyncTask<String, Void, String> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        protected String doInBackground(String... args) {
-            String xml = "";
-            String urlParameters = "";
-            xml = Function.excuteGet("http://newsapi.org/v2/top-headlines?country=" + NEWS_SOURCE + "&apiKey=" + API_KEY, urlParameters);
-            return xml;
-        }
-
-        @Override
-        protected void onPostExecute(String xml) {
-            if (xml.length() > 10) { // проверяет, если нет пусто
-                try {
-                    JSONObject jsonResponse = new JSONObject(xml);
-                    JSONArray jsonArray = jsonResponse.optJSONArray("articles");
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        JSONObject jsonObject = jsonArray.getJSONObject(i);
-                        HashMap<String, String> map = new HashMap<>();
-                        map.put(KEY_AUTHOR, jsonObject.optString(KEY_AUTHOR).toString());
-                        map.put(KEY_TITLE, jsonObject.optString(KEY_TITLE).toString());
-                        map.put(KEY_DESCRIPTION, jsonObject.optString(KEY_DESCRIPTION).toString());
-                        map.put(KEY_URL, jsonObject.optString(KEY_URL).toString());
-                        map.put(KEY_URLTOIMAGE, jsonObject.optString(KEY_URLTOIMAGE).toString());
-                        map.put(KEY_PUBLISHEDAT, jsonObject.optString(KEY_PUBLISHEDAT).toString());
-                        dataList.add(map);
-                    }
-                } catch (JSONException e) {
-                    Toast.makeText(getApplicationContext(), "Unexpected error", Toast.LENGTH_SHORT).show();
-                }
-
-                ListNewsAdapter adapter = new ListNewsAdapter(MenuActivity.this, dataList);
-                listNews.setAdapter(adapter);
-
-                listNews.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    public void onItemClick(AdapterView<?> parent, View view,
-                                            int position, long id) {
-                        Intent i = new Intent(MenuActivity.this, DetailNewsActivity.class);
-                        i.putExtra("url", dataList.get(+position).get(KEY_URL));
-                        startActivity(i);
-                    }
-                });
-
-            } else {
-                Toast.makeText(getApplicationContext(), "No news found", Toast.LENGTH_SHORT).show();
-            }
-        }
-
-    }
+//    @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
+//    public class DownloadNews extends AsyncTask<String, Void, String> {
+//        @Override
+//        protected void onPreExecute() {
+//            super.onPreExecute();
+//        }
+//
+//        protected String doInBackground(String... args) {
+//            String xml = "";
+//            String urlParameters = "";
+//            xml = Function.excuteGet("http://newsapi.org/v2/top-headlines?country=" + NEWS_SOURCE + "&apiKey=" + API_KEY, urlParameters);
+//            return xml;
+//        }
+//
+//        @Override
+//        protected void onPostExecute(String xml) {
+//            if (xml.length() > 10) { // проверяет, если нет пусто
+//                try {
+//                    JSONObject jsonResponse = new JSONObject(xml);
+//                    JSONArray jsonArray = jsonResponse.optJSONArray("articles");
+//                    for (int i = 0; i < jsonArray.length(); i++) {
+//                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+//                        HashMap<String, String> map = new HashMap<>();
+//                        map.put(KEY_AUTHOR, jsonObject.optString(KEY_AUTHOR).toString());
+//                        map.put(KEY_TITLE, jsonObject.optString(KEY_TITLE).toString());
+//                        map.put(KEY_DESCRIPTION, jsonObject.optString(KEY_DESCRIPTION).toString());
+//                        map.put(KEY_URL, jsonObject.optString(KEY_URL).toString());
+//                        map.put(KEY_URLTOIMAGE, jsonObject.optString(KEY_URLTOIMAGE).toString());
+//                        map.put(KEY_PUBLISHEDAT, jsonObject.optString(KEY_PUBLISHEDAT).toString());
+//                        dataList.add(map);
+//                    }
+//                } catch (JSONException e) {
+//                    Toast.makeText(getApplicationContext(), "Unexpected error", Toast.LENGTH_SHORT).show();
+//                }
+//
+//                ListNewsAdapter adapter = new ListNewsAdapter(MenuActivity.this, dataList);
+////                listNews.setAdapter(adapter);
+//
+////                listNews.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+////                    public void onItemClick(AdapterView<?> parent, View view,
+////                                            int position, long id) {
+////                        Intent i = new Intent(MenuActivity.this, DetailNewsActivity.class);
+////                        i.putExtra("url", dataList.get(+position).get(KEY_URL));
+////                        startActivity(i);
+////                    }
+////                });
+//
+//            } else {
+//                Toast.makeText(getApplicationContext(), "No news found", Toast.LENGTH_SHORT).show();
+//            }
+//        }
+//
+//    }
 
 }
