@@ -28,6 +28,8 @@ public class SharePrefManager {
             mInstance = new SharePrefManager(mContext);
         }
         return mInstance;
+
+
     }
     public void saveUser(LoginResponse login){
         SharedPreferences sharedPreferences = mContext.getSharedPreferences(SP_AVES, Context.MODE_PRIVATE);
